@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Канбан-доска</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400..800&family=Onest:wght@400..700&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../assets/base.css">
+<script src="../config.js"></script>
+<script src="../assets/common.js"></script>
+<style>
+  .toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; margin-bottom: 24px; }
+  .toolbar .search { flex: 1 1 240px; max-width: 360px; }
+  .progress-box { display: flex; align-items: center; gap: 12px; flex: 1 1 220px; }
+  .progress-box__bar { flex: 1; height: 8px; border-radius: 99px; background: var(--line); overflow: hidden; }
+  .progress-box__bar span { display: block; height: 100%; width: 0; background: var(--good); border-radius: inherit; transition: width 0.4s ease; }
+  .progress-box__label { font-family: var(--font-mono); font-size: 13px; color: var(--ink-soft); white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+  .board { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: start; }
+  @media (max-width: 900px) { .board { grid-template-columns: minmax(0, 1fr); } }
+  .col {
+    display: flex; flex-direction: column; gap: 10px; min-width: 0;
+    padding: 14px; border-radius: var(--radius);
+    background: var(--surface-2); border: 1px solid var(--line);
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+  }
+  .col.is-over { border-color: var(--cobalt); background: var(--cobalt-soft); }
+  .col__head { display: flex; align-items: center; gap: 10px; padding: 2px 4px 6px; }
+  .col__dot { width: 10px; height: 10px; border-radius: 50%; }
+  .col[data-col="todo"] .col__dot { background: var(--ink-faint); }
+  .col[data-col="doing"] .col__dot { background: var(--cobalt); }
+  .col[data-col="done"] .col__dot { background: var(--good); }
+  .col__head h2 { font-family: var(--font-display); font-size: 15px; font-weight: 700; }
+  .col__count { margin-left: auto; font-family: var(--font-mono); font-size: 12px; color: var(--ink-soft); background: var(--surface); border: 1px solid var(--line); border-radius: 99px; padding: 2px 10px; }
+  .list { display: flex; flex-direction: column; gap: 8px; min-height: 60px; }
+  .empty { padding: 18px; text-align: center; font-size: 14px; color: var(--ink-faint); border: 1px dashed var(--line); border-radius: var(--radius-sm); }
+
+  .card {
+    display: grid; gap: 8px; padding: 12px 12px 10px;
+    border-radius: 10px; background: var(--surface); border: 1px solid var(--line);
+    box-shadow: 0 1px 2px rgba(13, 19, 48, 0.05);
+    cursor: grab; transition: box-shadow 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
+  }
+  .card:hover { box-shadow: var(--shadow); }
+  .card.is-dragging { opacity: 0.4; transform: rotate(1.5deg); }
+  .card.is-new { animation: pop 0.35s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  @keyframes pop { from { transform: scale(0.94); opacity: 0.4; } }
+  .card__title { font-weight: 600; font-size: 15px; line-height: 1.4; overflow-wrap: anywhere; outline: none; border-radius: 4px; }
+  .card__title[contenteditable="true"] { background: var(--cobalt-soft); padding: 2px 4px; margin: -2px -4px; cursor: text; }
+  .col[data-col="done"] .card__title { color: var(--ink-soft); text-decoration: line-through; text-decoration-color: var(--ink-faint); }
+  .card__foot { display: flex; align-items: center; gap: 6px; }
+  .prio { font-family: var(--font-mono); font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 99px; border: 1px solid currentColor; cursor: pointer; background: transparent; }
+  .prio[data-p="low"] { color: var(--ink-faint); }
+  .prio[data-p="mid"] { color: var(--warn); }
+  .prio[data-p="high"] { color: var(--bad); }
+  .card__date { font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint); }
+  .card__actions { margin-left: auto; display: flex; gap: 2px; }
+  .icon-btn { width: 30px; height: 30px; display: grid; place-items: center; border: 0; border-radius: 6px; background: transparent; color: var(--ink-faint); cursor: pointer; transition: background-color 0.15s ease, color 0.15s ease; }
+  .icon-btn:hover { background: var(--surface-2); color: var(--ink); }
+  .icon-btn[disabled] { opacity: 0.3; cursor: default; background: transparent; }
+  .icon-btn svg { width: 16px; height: 16px; }
+  .icon-btn.is-confirm { width: auto; padding: 0 8px; background: var(--bad); color: #fff; font-size: 12px; font-weight: 600; }
+  .placeholder { height: 4px; border-radius: 4px; background: var(--cobalt); margin: -2px 0; }
+
+  .add { display: flex; gap: 6px; }
+  .add .input { min-height: 40px; padding: 8px 12px; font-size: 14px; }
+  .add .btn { min-height: 40px; }
+  .hint { margin-top: 20px; font-size: 13px; color: var(--ink-faint); }
+  .hint kbd { font-family: var(--font-mono); font-size: 12px; padding: 1px 6px; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 4px; background: var(--surface); }
+  .reset-row { display: flex; gap: 8px; margin-left: auto; }
+</style>
+</head>
+<body>
+<header class="pbar">
+  <div class="wrap pbar__inner">
+    <a class="pbar__back" href="../index.html">← <span>Портфолио</span></a>
+    <div class="pbar__title"><p class="eyebrow">Продуктивность</p><h1>Канбан-доска</h1></div>
+    <div class="pbar__actions">
+      <button class="btn btn--ghost btn--icon theme-toggle" type="button" data-theme-toggle aria-label="Переключить тему">
+        <svg class="i-moon" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg class="i-sun" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></g></svg>
+      </button>
+      <a class="btn btn--sm" data-src="kanban" href="https://github.com/"><svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m16 18 6-6-6-6M8 6l-6 6 6 6"/></svg><span class="pbar__src-label">Код на GitHub</span></a>
+    </div>
+  </div>
+</header>
+
+<main class="pmain">
+  <div class="wrap">
+    <div class="toolbar">
+      <input class="input search" id="search" type="search" placeholder="Поиск по задачам" aria-label="Поиск по задачам">
+      <div class="progress-box">
+        <div class="progress-box__bar"><span id="progFill"></span></div>
+        <span class="progress-box__label" id="progLabel">0 из 0 готово</span>
+      </div>
+      <div class="reset-row">
+        <button class="btn btn--ghost btn--sm" type="button" id="resetBtn">Вернуть пример</button>
+        <button class="btn btn--ghost btn--sm" type="button" id="clearBtn">Очистить доску</button>
+      </div>
+    </div>
+
+    <div class="board" id="board">
+      <section class="col" data-col="todo">
+        <div class="col__head"><span class="col__dot"></span><h2>Нужно сделать</h2><span class="col__count">0</span></div>
+        <div class="list"></div>
+        <form class="add"><input class="input" id="add-todo" placeholder="Новая задача…" aria-label="Новая задача в «Нужно сделать»"><button class="btn btn--sm btn--primary" type="submit" aria-label="Добавить">+</button></form>
+      </section>
+      <section class="col" data-col="doing">
+        <div class="col__head"><span class="col__dot"></span><h2>В работе</h2><span class="col__count">0</span></div>
+        <div class="list"></div>
+        <form class="add"><input class="input" id="add-doing" placeholder="Новая задача…" aria-label="Новая задача в «В работе»"><button class="btn btn--sm btn--primary" type="submit" aria-label="Добавить">+</button></form>
+      </section>
+      <section class="col" data-col="done">
+        <div class="col__head"><span class="col__dot"></span><h2>Готово</h2><span class="col__count">0</span></div>
+        <div class="list"></div>
+        <form class="add"><input class="input" id="add-done" placeholder="Новая задача…" aria-label="Новая задача в «Готово»"><button class="btn btn--sm btn--primary" type="submit" aria-label="Добавить">+</button></form>
+      </section>
+    </div>
+    <p class="hint">Перетаскивай карточки мышью или двигай стрелками. Двойной клик по названию переименует задачу, клик по метке сменит приоритет. Всё сохраняется в браузере.</p>
+  </div>
+</main>
+
+<footer class="pfoot">
+  <div class="wrap pfoot__inner">
+    <p class="label">Другие проекты</p>
+    <div class="pfoot__list" data-project-nav="kanban"></div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var KEY = "tm-kanban";
+  var COLS = ["todo", "doing", "done"];
+  var PRIO = { low: "Низкий", mid: "Средний", high: "Высокий" };
+  var PRIO_NEXT = { low: "mid", mid: "high", high: "low" };
+
+  function sample() {
+    var d = Date.now();
+    return [
+      { id: "s1", title: "Сверстать главную страницу лендинга", col: "doing", prio: "high", at: d - 864e5 },
+      { id: "s2", title: "Подключить форму обратной связи", col: "todo", prio: "mid", at: d - 2 * 864e5 },
+      { id: "s3", title: "Оптимизировать картинки в WebP", col: "todo", prio: "low", at: d - 3 * 864e5 },
+      { id: "s4", title: "Добавить тёмную тему", col: "todo", prio: "mid", at: d - 864e5 },
+      { id: "s5", title: "Настроить GitHub Pages", col: "done", prio: "mid", at: d - 5 * 864e5 },
+      { id: "s6", title: "Собрать макет в Figma", col: "done", prio: "high", at: d - 6 * 864e5 },
+      { id: "s7", title: "Адаптив под телефоны", col: "doing", prio: "high", at: d - 2 * 864e5 }
+    ];
+  }
+
+  var tasks;
+  try { tasks = JSON.parse(localStorage.getItem(KEY)); } catch (e) { tasks = null; }
+  if (!Array.isArray(tasks)) tasks = sample();
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(tasks)); } catch (e) {} }
+
+  var board = document.getElementById("board");
+  var search = document.getElementById("search");
+  var query = "";
+  var newId = null;
+
+  var ICON = {
+    left: '<svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M15 18l-6-6 6-6"/></svg>',
+    right: '<svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6"/></svg>',
+    del: '<svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>'
+  };
+
+  function fmtDate(t) {
+    return new Date(t).toLocaleDateString("ru-RU", { day: "numeric", month: "short" });
+  }
+
+  function render() {
+    COLS.forEach(function (col) {
+      var section = board.querySelector('[data-col="' + col + '"]');
+      var list = section.querySelector(".list");
+      var items = tasks.filter(function (t) { return t.col === col; });
+      section.querySelector(".col__count").textContent = items.length;
+      var shown = items.filter(function (t) { return !query || t.title.toLowerCase().indexOf(query) !== -1; });
+      list.innerHTML = "";
+      if (!shown.length) {
+        var e = document.createElement("div");
+        e.className = "empty";
+        e.textContent = query ? "Ничего не найдено" : "Перетащи сюда задачу";
+        list.appendChild(e);
+      }
+      shown.forEach(function (t) { list.appendChild(cardEl(t)); });
+    });
+    var done = tasks.filter(function (t) { return t.col === "done"; }).length;
+    document.getElementById("progFill").style.width = (tasks.length ? done / tasks.length * 100 : 0) + "%";
+    document.getElementById("progLabel").textContent = done + " из " + tasks.length + " готово";
+    newId = null;
+  }
+
+  function cardEl(t) {
+    var el = document.createElement("article");
+    el.className = "card" + (t.id === newId ? " is-new" : "");
+    el.draggable = true;
+    el.dataset.id = t.id;
+    var ci = COLS.indexOf(t.col);
+    el.innerHTML =
+      '<div class="card__title"></div>' +
+      '<div class="card__foot">' +
+        '<button class="prio" type="button" data-p="' + t.prio + '" title="Сменить приоритет">' + PRIO[t.prio] + '</button>' +
+        '<span class="card__date">' + fmtDate(t.at) + '</span>' +
+        '<div class="card__actions">' +
+          '<button class="icon-btn" type="button" data-act="left" aria-label="Переместить влево"' + (ci === 0 ? " disabled" : "") + '>' + ICON.left + '</button>' +
+          '<button class="icon-btn" type="button" data-act="right" aria-label="Переместить вправо"' + (ci === 2 ? " disabled" : "") + '>' + ICON.right + '</button>' +
+          '<button class="icon-btn" type="button" data-act="del" aria-label="Удалить">' + ICON.del + '</button>' +
+        '</div>' +
+      '</div>';
+    el.querySelector(".card__title").textContent = t.title;
+    return el;
+  }
+
+  function byId(id) { return tasks.filter(function (t) { return t.id === id; })[0]; }
+
+  board.addEventListener("click", function (e) {
+    var card = e.target.closest(".card");
+    if (!card) return;
+    var t = byId(card.dataset.id);
+    var prio = e.target.closest(".prio");
+    if (prio) { t.prio = PRIO_NEXT[t.prio]; save(); render(); return; }
+    var btn = e.target.closest("[data-act]");
+    if (!btn) return;
+    var act = btn.dataset.act;
+    if (act === "left" || act === "right") {
+      var i = COLS.indexOf(t.col) + (act === "left" ? -1 : 1);
+      if (i < 0 || i > 2) return;
+      // move to the end of the target column
+      tasks.splice(tasks.indexOf(t), 1);
+      t.col = COLS[i];
+      tasks.push(t);
+      newId = t.id;
+      save(); render();
+      if (t.col === "done") window.TM.toast("Задача выполнена");
+    } else if (act === "del") {
+      if (btn.classList.contains("is-confirm")) {
+        tasks.splice(tasks.indexOf(t), 1);
+        save(); render();
+        window.TM.toast("Задача удалена");
+      } else {
+        btn.classList.add("is-confirm");
+        btn.textContent = "Удалить?";
+        setTimeout(function () {
+          if (btn.isConnected && btn.classList.contains("is-confirm")) {
+            btn.classList.remove("is-confirm");
+            btn.innerHTML = ICON.del;
+          }
+        }, 2500);
+      }
+    }
+  });
+
+  // Inline rename
+  board.addEventListener("dblclick", function (e) {
+    var title = e.target.closest(".card__title");
+    if (!title) return;
+    var card = title.closest(".card");
+    card.draggable = false;
+    title.contentEditable = "true";
+    title.focus();
+    var range = document.createRange();
+    range.selectNodeContents(title);
+    var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);
+    function finish(commit) {
+      title.removeEventListener("blur", onBlur);
+      title.removeEventListener("keydown", onKey);
+      var t = byId(card.dataset.id);
+      var v = title.textContent.trim();
+      if (commit && v) t.title = v.slice(0, 140);
+      save(); render();
+    }
+    function onBlur() { finish(true); }
+    function onKey(ev) {
+      if (ev.key === "Enter") { ev.preventDefault(); title.blur(); }
+      if (ev.key === "Escape") { title.removeEventListener("blur", onBlur); finish(false); }
+    }
+    title.addEventListener("blur", onBlur);
+    title.addEventListener("keydown", onKey);
+  });
+
+  // Add
+  board.querySelectorAll(".add").forEach(function (form) {
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var input = form.querySelector("input");
+      var v = input.value.trim();
+      if (!v) { input.focus(); return; }
+      var t = { id: "t" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6), title: v.slice(0, 140), col: form.closest(".col").dataset.col, prio: "mid", at: Date.now() };
+      tasks.push(t);
+      newId = t.id;
+      input.value = "";
+      save(); render();
+    });
+  });
+
+  // Drag & drop
+  var dragId = null;
+  var ph = document.createElement("div");
+  ph.className = "placeholder";
+
+  board.addEventListener("dragstart", function (e) {
+    var card = e.target.closest(".card");
+    if (!card) return;
+    dragId = card.dataset.id;
+    e.dataTransfer.effectAllowed = "move";
+    try { e.dataTransfer.setData("text/plain", dragId); } catch (err) {}
+    requestAnimationFrame(function () { card.classList.add("is-dragging"); });
+  });
+  board.addEventListener("dragend", function () {
+    dragId = null;
+    ph.remove();
+    board.querySelectorAll(".is-dragging").forEach(function (c) { c.classList.remove("is-dragging"); });
+    board.querySelectorAll(".is-over").forEach(function (c) { c.classList.remove("is-over"); });
+  });
+  board.addEventListener("dragover", function (e) {
+    if (!dragId) return;
+    var col = e.target.closest(".col");
+    if (!col) return;
+    e.preventDefault();
+    board.querySelectorAll(".is-over").forEach(function (c) { if (c !== col) c.classList.remove("is-over"); });
+    col.classList.add("is-over");
+    var list = col.querySelector(".list");
+    var cards = Array.from(list.querySelectorAll(".card:not(.is-dragging)"));
+    var after = cards.filter(function (c) {
+      var r = c.getBoundingClientRect();
+      return e.clientY < r.top + r.height / 2;
+    })[0];
+    if (after) list.insertBefore(ph, after); else list.appendChild(ph);
+  });
+  board.addEventListener("drop", function (e) {
+    if (!dragId) return;
+    e.preventDefault();
+    var col = e.target.closest(".col");
+    var t = byId(dragId);
+    if (!col || !t) return;
+    var next = ph.nextElementSibling;
+    while (next && !next.classList.contains("card")) next = next.nextElementSibling;
+    if (next && next.dataset.id === t.id) {
+      next = next.nextElementSibling;
+      while (next && !next.classList.contains("card")) next = next.nextElementSibling;
+    }
+    var wasDone = t.col === "done";
+    tasks.splice(tasks.indexOf(t), 1);
+    t.col = col.dataset.col;
+    if (next) tasks.splice(tasks.indexOf(byId(next.dataset.id)), 0, t);
+    else tasks.push(t);
+    newId = t.id;
+    save(); render();
+    if (!wasDone && t.col === "done") window.TM.toast("Задача выполнена");
+  });
+
+  search.addEventListener("input", function () { query = search.value.trim().toLowerCase(); render(); });
+
+  function confirmButton(btn, label, action) {
+    var original = btn.textContent;
+    btn.addEventListener("click", function () {
+      if (btn.dataset.armed) {
+        delete btn.dataset.armed;
+        btn.textContent = original;
+        btn.classList.remove("btn--primary");
+        action();
+      } else {
+        btn.dataset.armed = "1";
+        btn.textContent = label;
+        btn.classList.add("btn--primary");
+        setTimeout(function () {
+          if (btn.dataset.armed) { delete btn.dataset.armed; btn.textContent = original; btn.classList.remove("btn--primary"); }
+        }, 3000);
+      }
+    });
+  }
+  confirmButton(document.getElementById("clearBtn"), "Точно очистить?", function () {
+    tasks = []; save(); render(); window.TM.toast("Доска очищена");
+  });
+  document.getElementById("resetBtn").addEventListener("click", function () {
+    tasks = sample(); save(); render(); window.TM.toast("Пример восстановлен");
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Тренажёр печати</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400..800&family=Onest:wght@400..700&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../assets/base.css">
+<script src="../config.js"></script>
+<script src="../assets/common.js"></script>
+<style>
+  .typing { max-width: 900px; margin-inline: auto; display: grid; gap: 22px; }
+  .opts { display: flex; flex-wrap: wrap; gap: 10px 22px; align-items: center; }
+  .opts__group { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+  .opts__group .label { margin-right: 4px; }
+  .live { display: flex; gap: 10px; flex-wrap: wrap; }
+  .live__item { flex: 1 1 120px; padding: 12px 16px; border-radius: var(--radius-sm); background: var(--surface); border: 1px solid var(--line); }
+  .live__item span { display: block; font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-faint); }
+  .live__item b { font-family: var(--font-display); font-size: 28px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .live__item.is-time b { color: var(--cobalt); }
+
+  .area {
+    position: relative;
+    padding: 26px 28px;
+    border-radius: var(--radius);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    cursor: text;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .area.is-focused { border-color: var(--cobalt); box-shadow: 0 0 0 4px var(--cobalt-soft); }
+  .viewport { height: calc(3 * 1.75em); overflow: hidden; font-family: var(--font-mono); font-size: clamp(17px, 2.6vw, 24px); line-height: 1.75; }
+  .text { transition: transform 0.2s ease; word-break: break-word; }
+  .text span { color: var(--ink-faint); position: relative; }
+  .text span.ok { color: var(--ink); }
+  .text span.bad { color: var(--bad); background: color-mix(in srgb, var(--bad) 14%, transparent); border-radius: 3px; }
+  .text span.bad.space { text-decoration: underline wavy var(--bad); }
+  .text span.cur::before {
+    content: ""; position: absolute; left: -1px; top: 0.25em; bottom: 0.2em; width: 2px;
+    background: var(--cobalt); border-radius: 2px;
+    animation: blink 1s steps(1) infinite;
+  }
+  .area.is-typing .text span.cur::before { animation: none; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .hidden-input { position: absolute; opacity: 0; left: 0; top: 0; width: 1px; height: 1px; border: 0; padding: 0; pointer-events: none; }
+  .focus-hint {
+    position: absolute; inset: 0; display: grid; place-items: center;
+    border-radius: inherit;
+    background: color-mix(in srgb, var(--surface) 70%, transparent);
+    backdrop-filter: blur(2px);
+    font-weight: 600; color: var(--ink-soft);
+  }
+  .area.is-focused .focus-hint { display: none; }
+  .row-btns { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .row-btns .hint { font-size: 13px; color: var(--ink-faint); }
+  .row-btns kbd { font-family: var(--font-mono); font-size: 12px; padding: 1px 6px; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 4px; background: var(--surface); }
+
+  .result {
+    display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0;
+    border-radius: var(--radius); background: var(--surface); border: 1px solid var(--cobalt);
+    overflow: hidden; animation: pop 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  @keyframes pop { from { transform: scale(0.97); opacity: 0; } }
+  .result > div { padding: 18px 20px; display: grid; gap: 2px; }
+  .result > div + div { border-left: 1px solid var(--line); }
+  .result span { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-faint); }
+  .result b { font-family: var(--font-display); font-size: clamp(26px, 4vw, 38px); font-weight: 700; color: var(--cobalt); font-variant-numeric: tabular-nums; }
+  .result small { font-size: 13px; color: var(--ink-soft); }
+  .result__note { grid-column: 1 / -1; border-left: 0 !important; border-top: 1px solid var(--line); font-size: 15px; color: var(--ink-soft); }
+  @media (max-width: 640px) {
+    .result { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .result > div:nth-child(3) { border-left: 0; }
+    .result > div:nth-child(n+3) { border-top: 1px solid var(--line); }
+  }
+  .history { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .history th { text-align: left; font-family: var(--font-mono); font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-faint); padding: 8px 10px; border-bottom: 1px solid var(--line); }
+  .history td { padding: 10px; border-bottom: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+  .history td:not(:first-child), .history th:not(:first-child) { text-align: right; }
+  .history-wrap { overflow-x: auto; }
+  .history-empty { color: var(--ink-faint); font-size: 14px; }
+  h2.sub { font-family: var(--font-display); font-size: 18px; margin-bottom: 8px; }
+</style>
+</head>
+<body>
+<header class="pbar">
+  <div class="wrap pbar__inner">
+    <a class="pbar__back" href="../index.html">← <span>Портфолио</span></a>
+    <div class="pbar__title"><p class="eyebrow">Игры</p><h1>Тренажёр печати</h1></div>
+    <div class="pbar__actions">
+      <button class="btn btn--ghost btn--icon theme-toggle" type="button" data-theme-toggle aria-label="Переключить тему">
+        <svg class="i-moon" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg class="i-sun" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></g></svg>
+      </button>
+      <a class="btn btn--sm" data-src="typing" href="https://github.com/"><svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m16 18 6-6-6-6M8 6l-6 6 6 6"/></svg><span class="pbar__src-label">Код на GitHub</span></a>
+    </div>
+  </div>
+</header>
+
+<main class="pmain">
+  <div class="wrap typing">
+    <div class="opts">
+      <div class="opts__group" role="group" aria-label="Язык">
+        <span class="label">Язык</span>
+        <button class="chip" type="button" data-lang="ru" aria-pressed="true">Русский</button>
+        <button class="chip" type="button" data-lang="en" aria-pressed="false">English</button>
+      </div>
+      <div class="opts__group" role="group" aria-label="Время">
+        <span class="label">Время</span>
+        <button class="chip" type="button" data-time="15" aria-pressed="false">15 с</button>
+        <button class="chip" type="button" data-time="30" aria-pressed="true">30 с</button>
+        <button class="chip" type="button" data-time="60" aria-pressed="false">60 с</button>
+      </div>
+    </div>
+
+    <div class="live" aria-live="off">
+      <div class="live__item is-time"><span>Осталось</span><b id="lvTime">30</b></div>
+      <div class="live__item"><span>Знаков в минуту</span><b id="lvCpm">0</b></div>
+      <div class="live__item"><span>Слов в минуту</span><b id="lvWpm">0</b></div>
+      <div class="live__item"><span>Точность</span><b id="lvAcc">100%</b></div>
+    </div>
+
+    <div class="area" id="area">
+      <div class="viewport"><div class="text" id="text"></div></div>
+      <textarea class="hidden-input" id="input" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Поле для набора текста"></textarea>
+      <div class="focus-hint">Нажми сюда и начинай печатать</div>
+    </div>
+
+    <div class="row-btns">
+      <button class="btn btn--primary btn--sm" type="button" id="restart">Новый текст</button>
+      <span class="hint">Таймер стартует с первой буквы. <kbd>Esc</kbd> начинает заново.</span>
+    </div>
+
+    <div id="resultBox"></div>
+
+    <section>
+      <h2 class="sub">Последние попытки</h2>
+      <div class="history-wrap" id="history"></div>
+    </section>
+  </div>
+</main>
+
+<footer class="pfoot">
+  <div class="wrap pfoot__inner">
+    <p class="label">Другие проекты</p>
+    <div class="pfoot__list" data-project-nav="typing"></div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var WORDS = {
+    ru: "и в не на я быть он с что а по это она этот к но они мы как из у который то за свой что весь год от так о для ты же все тот мочь вы человек такой его сказать только или ещё бы себя один как уже до время если сам когда другой вот говорить наш мой знать стать при чтобы дело жизнь кто первый очень два день её новый рука даже во со раз где там под можно ну какой после их работа без самый потом надо хотеть ли слово идти большой должен место иметь ничто сайт код экран кнопка проект интерфейс страница задача дизайн цвет текст строка функция данные город утро море книга окно дорога друг вопрос ответ мысль голос свет дом".split(" "),
+    en: "the be to of and a in that have it for not on with he as you do at this but his by from they we say her she or an will my one all would there their what so up out if about who get which go me when make can like time no just him know take people into year your good some could them see other than then now look only come its over think also back after use two how our work first well way even new want because any these give day most us code screen button project page design color text line function data city morning sea book window road friend question answer light house fast simple clean".split(" ")
+  };
+  var lang = "ru", duration = 30;
+  var target = "", spans = [], typed = "";
+  var startAt = 0, timer = 0, finished = false;
+  var keystrokes = 0, errors = 0;
+
+  var area = document.getElementById("area");
+  var textEl = document.getElementById("text");
+  var input = document.getElementById("input");
+  var store = window.TM.store;
+
+  function makeText() {
+    var list = WORDS[lang], out = [], prevW = "";
+    while (out.join(" ").length < 420) {
+      var w = list[Math.floor(Math.random() * list.length)];
+      if (w === prevW) continue;
+      out.push(w); prevW = w;
+    }
+    return out.join(" ");
+  }
+
+  function reset() {
+    clearInterval(timer);
+    timer = 0; startAt = 0; finished = false;
+    keystrokes = 0; errors = 0; typed = "";
+    target = makeText();
+    textEl.innerHTML = "";
+    spans = Array.from(target).map(function (ch) {
+      var s = document.createElement("span");
+      s.textContent = ch;
+      if (ch === " ") s.className = "space";
+      textEl.appendChild(s);
+      return s;
+    });
+    spans[0].classList.add("cur");
+    textEl.style.transform = "translateY(0)";
+    input.value = "";
+    input.disabled = false;
+    area.classList.remove("is-typing");
+    document.getElementById("resultBox").innerHTML = "";
+    document.getElementById("lvTime").textContent = duration;
+    document.getElementById("lvCpm").textContent = "0";
+    document.getElementById("lvWpm").textContent = "0";
+    document.getElementById("lvAcc").textContent = "100%";
+  }
+
+  // «е» вместо «ё» не считаем ошибкой
+  function same(a, b) {
+    return a === b || (a === "е" && b === "ё") || (a === "Е" && b === "Ё");
+  }
+
+  function correctCount() {
+    var n = 0;
+    for (var i = 0; i < typed.length; i++) if (same(typed[i], target[i])) n++;
+    return n;
+  }
+
+  function stats() {
+    var elapsed = startAt ? Math.min(duration, (Date.now() - startAt) / 1000) : 0;
+    var minutes = Math.max(elapsed, 1) / 60;
+    var ok = correctCount();
+    return {
+      cpm: Math.round(ok / minutes),
+      wpm: Math.round(ok / 5 / minutes),
+      acc: keystrokes ? Math.max(0, Math.round((keystrokes - errors) / keystrokes * 100)) : 100,
+      ok: ok,
+      elapsed: elapsed
+    };
+  }
+
+  function renderLive() {
+    var s = stats();
+    var left = startAt ? Math.max(0, Math.ceil(duration - s.elapsed)) : duration;
+    document.getElementById("lvTime").textContent = left;
+    document.getElementById("lvCpm").textContent = startAt ? s.cpm : 0;
+    document.getElementById("lvWpm").textContent = startAt ? s.wpm : 0;
+    document.getElementById("lvAcc").textContent = s.acc + "%";
+  }
+
+  function paint(from, to) {
+    for (var i = Math.max(0, from); i <= Math.min(spans.length - 1, to); i++) {
+      var s = spans[i];
+      s.classList.remove("ok", "bad", "cur");
+      if (i < typed.length) s.classList.add(same(typed[i], target[i]) ? "ok" : "bad");
+      else if (i === typed.length) s.classList.add("cur");
+    }
+    var cur = spans[Math.min(typed.length, spans.length - 1)];
+    var lineH = parseFloat(getComputedStyle(textEl).lineHeight) || 40;
+    var lineIndex = Math.round((cur.offsetTop - spans[0].offsetTop) / lineH);
+    textEl.style.transform = "translateY(" + (-Math.max(0, lineIndex - 1) * lineH) + "px)";
+  }
+
+  input.addEventListener("input", function () {
+    if (finished) { input.value = typed; return; }
+    var v = input.value.replace(/\n/g, "").slice(0, target.length);
+    if (!startAt && v.length) {
+      startAt = Date.now();
+      area.classList.add("is-typing");
+      timer = setInterval(function () {
+        renderLive();
+        if (Date.now() - startAt >= duration * 1000) finish();
+      }, 200);
+    }
+    // count new characters as keystrokes, and mistakes among them
+    if (v.length > typed.length) {
+      for (var i = typed.length; i < v.length; i++) {
+        keystrokes++;
+        if (!same(v[i], target[i])) errors++;
+      }
+    }
+    var prevLen = typed.length;
+    typed = v;
+    input.value = v;
+    paint(Math.min(prevLen, v.length) - 1, Math.max(prevLen, v.length) + 1);
+    renderLive();
+    if (typed.length >= target.length) finish();
+  });
+
+  function finish() {
+    if (finished) return;
+    finished = true;
+    clearInterval(timer);
+    input.disabled = true;
+    area.classList.remove("is-typing");
+    var s = stats();
+    renderLive();
+    var key = "tm-typing-" + lang;
+    var bestPrev = parseInt(store(key + "-best"), 10) || 0;
+    var isBest = s.cpm > bestPrev;
+    if (isBest) store(key + "-best", String(s.cpm));
+    var verdict = s.cpm >= 400 ? "Уровень профи: так печатают немногие." :
+      s.cpm >= 250 ? "Отличный результат, это выше среднего." :
+      s.cpm >= 150 ? "Хорошая скорость. Ещё пара тренировок, и будет 250+." :
+      "Неплохое начало. Смотри на экран, а не на клавиатуру.";
+    document.getElementById("resultBox").innerHTML =
+      '<div class="result" role="status">' +
+        "<div><span>Знаков в минуту</span><b>" + s.cpm + "</b><small>" + (isBest ? "новый рекорд" : "рекорд " + bestPrev) + "</small></div>" +
+        "<div><span>Слов в минуту</span><b>" + s.wpm + "</b><small>слово = 5 знаков</small></div>" +
+        "<div><span>Точность</span><b>" + s.acc + "%</b><small>" + errors + " ошиб." + "</small></div>" +
+        "<div><span>Время</span><b>" + Math.round(s.elapsed) + " с</b><small>" + (lang === "ru" ? "русский" : "английский") + "</small></div>" +
+        '<div class="result__note">' + verdict + " Нажми «Новый текст» или Esc, чтобы попробовать ещё.</div>" +
+      "</div>";
+    saveHistory({ at: Date.now(), lang: lang, time: duration, cpm: s.cpm, wpm: s.wpm, acc: s.acc });
+  }
+
+  function loadHistory() {
+    try { return JSON.parse(store("tm-typing-history")) || []; } catch (e) { return []; }
+  }
+  function saveHistory(item) {
+    var h = loadHistory();
+    h.unshift(item);
+    store("tm-typing-history", JSON.stringify(h.slice(0, 6)));
+    renderHistory();
+  }
+  function renderHistory() {
+    var h = loadHistory();
+    var box = document.getElementById("history");
+    if (!h.length) { box.innerHTML = '<p class="history-empty">Здесь появятся твои результаты.</p>'; return; }
+    box.innerHTML = '<table class="history"><thead><tr><th>Когда</th><th>Язык</th><th>Режим</th><th>Зн/мин</th><th>Сл/мин</th><th>Точность</th></tr></thead><tbody>' +
+      h.map(function (r) {
+        return "<tr><td>" + new Date(r.at).toLocaleString("ru-RU", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }) +
+          "</td><td>" + (r.lang === "ru" ? "RU" : "EN") + "</td><td>" + r.time + " с</td><td>" + r.cpm + "</td><td>" + r.wpm + "</td><td>" + r.acc + "%</td></tr>";
+      }).join("") + "</tbody></table>";
+  }
+
+  function focusInput() { if (!finished) input.focus({ preventScroll: true }); }
+  area.addEventListener("click", focusInput);
+  input.addEventListener("focus", function () { area.classList.add("is-focused"); });
+  input.addEventListener("blur", function () { area.classList.remove("is-focused"); });
+  input.addEventListener("keydown", function (e) {
+    if (e.key === "Tab") e.preventDefault();
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") { reset(); focusInput(); }
+  });
+  document.getElementById("restart").addEventListener("click", function () { reset(); focusInput(); });
+
+  function bindChips(attr, apply) {
+    var chips = document.querySelectorAll("[data-" + attr + "]");
+    chips.forEach(function (c) {
+      c.addEventListener("click", function () {
+        chips.forEach(function (x) { x.setAttribute("aria-pressed", String(x === c)); });
+        apply(c.getAttribute("data-" + attr));
+        reset();
+        focusInput();
+      });
+    });
+  }
+  bindChips("lang", function (v) { lang = v; });
+  bindChips("time", function (v) { duration = parseInt(v, 10); });
+
+  reset();
+  renderHistory();
+})();
+</script>
+</body>
+</html>

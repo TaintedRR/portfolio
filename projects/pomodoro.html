@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pomodoro-таймер</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400..800&family=Onest:wght@400..700&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="../assets/base.css">
+<script src="../config.js"></script>
+<script src="../assets/common.js"></script>
+<style>
+  .pomo { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 340px); gap: 28px; align-items: start; }
+  @media (max-width: 900px) { .pomo { grid-template-columns: minmax(0, 1fr); } }
+  .timer-card { display: grid; justify-items: center; gap: 24px; padding: clamp(20px, 4vw, 40px); border-radius: var(--radius); background: var(--surface); border: 1px solid var(--line); min-width: 0; }
+  .tabs { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
+  .ring { position: relative; width: min(320px, 78vw); aspect-ratio: 1; max-width: 100%; }
+  .ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+  .ring__track { fill: none; stroke: var(--line); stroke-width: 10; }
+  .ring__bar { fill: none; stroke: var(--mode); stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset 0.3s linear, stroke 0.4s ease; }
+  .ring__center { position: absolute; inset: 0; display: grid; place-items: center; align-content: center; gap: 6px; text-align: center; }
+  .ring__time { font-family: var(--font-display); font-weight: 700; font-size: clamp(48px, 13vw, 76px); line-height: 1; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+  .ring__label { font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--mode); }
+  .timer-card { --mode: var(--cobalt); }
+  .timer-card[data-mode="short"] { --mode: var(--good); }
+  .timer-card[data-mode="long"] { --mode: var(--warn); }
+  .timer-card.is-running .ring__bar { filter: drop-shadow(0 0 6px color-mix(in srgb, var(--mode) 50%, transparent)); }
+  .main-btns { display: flex; gap: 10px; align-items: center; }
+  .main-btns .btn--primary { min-width: 150px; min-height: 52px; font-size: 17px; }
+  .task { width: 100%; max-width: 420px; }
+  .task .input { text-align: center; }
+  .dots { display: flex; gap: 8px; align-items: center; font-size: 13px; color: var(--ink-faint); }
+  .dots i { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--line); transition: all 0.3s ease; }
+  .dots i.on { background: var(--cobalt); border-color: var(--cobalt); }
+
+  .side { display: grid; gap: 16px; min-width: 0; }
+  .panel { padding: 20px; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--line); }
+  .panel h2 { font-family: var(--font-display); font-size: 17px; margin-bottom: 12px; }
+  .stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .stats div { padding: 12px; border-radius: var(--radius-sm); background: var(--surface-2); }
+  .stats span { display: block; font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-faint); }
+  .stats b { font-family: var(--font-display); font-size: 26px; font-variant-numeric: tabular-nums; }
+  .log { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 0; max-height: 200px; overflow: auto; }
+  .log li { display: flex; justify-content: space-between; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+  .log li span:last-child { font-family: var(--font-mono); font-size: 12px; color: var(--ink-faint); white-space: nowrap; }
+  .log-empty { color: var(--ink-faint); font-size: 14px; }
+  .settings { display: grid; gap: 12px; }
+  .settings__row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .settings .input { min-height: 40px; padding: 8px 10px; }
+  .toggle { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 15px; cursor: pointer; }
+  .toggle input { appearance: none; -webkit-appearance: none; width: 44px; height: 26px; border-radius: 99px; background: var(--line); position: relative; cursor: pointer; transition: background-color 0.2s ease; flex: none; margin: 0; }
+  .toggle input::after { content: ""; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px; border-radius: 50%; background: var(--surface); box-shadow: 0 1px 3px rgba(0,0,0,.25); transition: transform 0.2s ease; }
+  .toggle input:checked { background: var(--cobalt); }
+  .toggle input:checked::after { transform: translateX(18px); }
+  .kbd-hint { font-size: 13px; color: var(--ink-faint); }
+  .kbd-hint kbd { font-family: var(--font-mono); font-size: 12px; padding: 1px 6px; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 4px; background: var(--surface); }
+</style>
+</head>
+<body>
+<header class="pbar">
+  <div class="wrap pbar__inner">
+    <a class="pbar__back" href="../index.html">← <span>Портфолио</span></a>
+    <div class="pbar__title"><p class="eyebrow">Продуктивность</p><h1>Pomodoro-таймер</h1></div>
+    <div class="pbar__actions">
+      <button class="btn btn--ghost btn--icon theme-toggle" type="button" data-theme-toggle aria-label="Переключить тему">
+        <svg class="i-moon" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg class="i-sun" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></g></svg>
+      </button>
+      <a class="btn btn--sm" data-src="pomodoro" href="https://github.com/"><svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m16 18 6-6-6-6M8 6l-6 6 6 6"/></svg><span class="pbar__src-label">Код на GitHub</span></a>
+    </div>
+  </div>
+</header>
+
+<main class="pmain">
+  <div class="wrap pomo">
+    <section class="timer-card" id="card" data-mode="focus">
+      <div class="tabs" role="group" aria-label="Режим">
+        <button class="chip" type="button" data-mode="focus" aria-pressed="true">Фокус</button>
+        <button class="chip" type="button" data-mode="short" aria-pressed="false">Короткий перерыв</button>
+        <button class="chip" type="button" data-mode="long" aria-pressed="false">Длинный перерыв</button>
+      </div>
+      <div class="ring">
+        <svg viewBox="0 0 220 220" aria-hidden="true">
+          <circle class="ring__track" cx="110" cy="110" r="100"></circle>
+          <circle class="ring__bar" id="bar" cx="110" cy="110" r="100"></circle>
+        </svg>
+        <div class="ring__center">
+          <div class="ring__time" id="time" role="timer" aria-live="off">25:00</div>
+          <div class="ring__label" id="modeLabel">Фокус</div>
+        </div>
+      </div>
+      <div class="main-btns">
+        <button class="btn btn--ghost btn--icon" type="button" id="reset" aria-label="Сбросить">
+          <svg viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></g></svg>
+        </button>
+        <button class="btn btn--primary" type="button" id="toggle">Старт</button>
+        <button class="btn btn--ghost btn--icon" type="button" id="skip" aria-label="Пропустить">
+          <svg viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 4 10 8-10 8V4z"/><path d="M19 5v14"/></g></svg>
+        </button>
+      </div>
+      <label class="task" for="task"><input class="input" id="task" type="text" maxlength="60" placeholder="Над чем работаешь?"></label>
+      <div class="dots" aria-label="Прогресс цикла"><span>Цикл</span><i></i><i></i><i></i><i></i></div>
+      <p class="kbd-hint"><kbd>Пробел</kbd> старт и пауза · <kbd>R</kbd> сброс</p>
+    </section>
+
+    <aside class="side">
+      <section class="panel">
+        <h2>Сегодня</h2>
+        <div class="stats">
+          <div><span>Помидоров</span><b id="stCount">0</b></div>
+          <div><span>Минут фокуса</span><b id="stMin">0</b></div>
+        </div>
+        <ul class="log" id="log"></ul>
+      </section>
+      <section class="panel">
+        <h2>Настройки</h2>
+        <div class="settings">
+          <div class="settings__row">
+            <label class="field" for="dFocus"><span>Фокус</span><input class="input" id="dFocus" type="number" min="1" max="90" value="25"></label>
+            <label class="field" for="dShort"><span>Перерыв</span><input class="input" id="dShort" type="number" min="1" max="30" value="5"></label>
+            <label class="field" for="dLong"><span>Длинный</span><input class="input" id="dLong" type="number" min="1" max="60" value="15"></label>
+          </div>
+          <label class="toggle" for="autoNext">Запускать следующий этап сам<input id="autoNext" type="checkbox"></label>
+          <label class="toggle" for="sound">Звуковой сигнал<input id="sound" type="checkbox" checked></label>
+          <button class="btn btn--ghost btn--sm" type="button" id="testSound">Проверить звук</button>
+        </div>
+      </section>
+    </aside>
+  </div>
+</main>
+
+<footer class="pfoot">
+  <div class="wrap pfoot__inner">
+    <p class="label">Другие проекты</p>
+    <div class="pfoot__list" data-project-nav="pomodoro"></div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var store = window.TM.store;
+  var LABEL = { focus: "Фокус", short: "Короткий перерыв", long: "Длинный перерыв" };
+  var settings;
+  try { settings = JSON.parse(store("tm-pomo-settings")); } catch (e) { settings = null; }
+  settings = Object.assign({ focus: 25, short: 5, long: 15, auto: false, sound: true }, settings || {});
+
+  var mode = "focus", total = settings.focus * 60, left = total, endAt = 0, tick = 0, cycle = 0;
+  var card = document.getElementById("card");
+  var timeEl = document.getElementById("time");
+  var bar = document.getElementById("bar");
+  var toggleBtn = document.getElementById("toggle");
+  var CIRC = 2 * Math.PI * 100;
+  bar.style.strokeDasharray = CIRC;
+  var baseTitle = document.title;
+
+  function fmt(sec) {
+    sec = Math.max(0, Math.ceil(sec));
+    return String(Math.floor(sec / 60)).padStart(2, "0") + ":" + String(sec % 60).padStart(2, "0");
+  }
+  function draw() {
+    timeEl.textContent = fmt(left);
+    bar.style.strokeDashoffset = CIRC * (1 - left / total);
+    document.title = endAt ? fmt(left) + " · " + LABEL[mode] : baseTitle;
+    document.querySelectorAll(".dots i").forEach(function (d, i) { d.classList.toggle("on", i < cycle); });
+  }
+
+  function setMode(m, autostart) {
+    stop();
+    mode = m;
+    total = settings[m] * 60;
+    left = total;
+    card.dataset.mode = m;
+    document.getElementById("modeLabel").textContent = LABEL[m];
+    document.querySelectorAll("[data-mode]").forEach(function (b) {
+      if (b.tagName === "BUTTON") b.setAttribute("aria-pressed", String(b.dataset.mode === m));
+    });
+    draw();
+    if (autostart) start();
+  }
+
+  function start() {
+    if (endAt) return;
+    unlockAudio();
+    endAt = Date.now() + left * 1000;
+    card.classList.add("is-running");
+    toggleBtn.textContent = "Пауза";
+    tick = setInterval(function () {
+      left = (endAt - Date.now()) / 1000;
+      if (left <= 0) { left = 0; draw(); complete(); return; }
+      draw();
+    }, 250);
+    draw();
+  }
+  function stop() {
+    if (!endAt) return;
+    clearInterval(tick);
+    left = Math.max(0, (endAt - Date.now()) / 1000);
+    endAt = 0;
+    card.classList.remove("is-running");
+    toggleBtn.textContent = "Продолжить";
+    draw();
+  }
+
+  function complete(skipped) {
+    clearInterval(tick);
+    endAt = 0;
+    card.classList.remove("is-running");
+    toggleBtn.textContent = "Старт";
+    if (settings.sound && !skipped) chime();
+    var next;
+    if (mode === "focus") {
+      if (!skipped) {
+        cycle = Math.min(4, cycle + 1);
+        logFocus(settings.focus);
+      }
+      next = cycle >= 4 ? "long" : "short";
+      window.TM.toast(skipped ? "Фокус пропущен" : "Помидор готов. Время отдохнуть");
+    } else {
+      if (mode === "long") cycle = 0;
+      next = "focus";
+      window.TM.toast("Перерыв закончился. За работу!");
+    }
+    setMode(next, settings.auto);
+    toggleBtn.textContent = settings.auto ? "Пауза" : "Старт";
+  }
+
+  // Sound: generated with Web Audio after the first click
+  var actx = null;
+  function unlockAudio() {
+    try {
+      if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
+      if (actx.state === "suspended") actx.resume();
+    } catch (e) { actx = null; }
+  }
+  function chime() {
+    if (!actx) return;
+    var now = actx.currentTime;
+    [660, 880, 1320].forEach(function (f, i) {
+      var o = actx.createOscillator(), g = actx.createGain();
+      o.type = "sine";
+      o.frequency.value = f;
+      g.gain.setValueAtTime(0.0001, now + i * 0.18);
+      g.gain.exponentialRampToValueAtTime(0.25, now + i * 0.18 + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, now + i * 0.18 + 0.5);
+      o.connect(g).connect(actx.destination);
+      o.start(now + i * 0.18);
+      o.stop(now + i * 0.18 + 0.55);
+    });
+  }
+
+  // Today's stats
+  function todayKey() { var d = new Date(); return "tm-pomo-" + d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate(); }
+  function loadDay() { try { return JSON.parse(store(todayKey())) || []; } catch (e) { return []; } }
+  function logFocus(min) {
+    var day = loadDay();
+    day.unshift({ at: Date.now(), min: min, task: document.getElementById("task").value.trim() });
+    store(todayKey(), JSON.stringify(day.slice(0, 50)));
+    renderDay();
+  }
+  function renderDay() {
+    var day = loadDay();
+    document.getElementById("stCount").textContent = day.length;
+    document.getElementById("stMin").textContent = day.reduce(function (s, x) { return s + x.min; }, 0);
+    var log = document.getElementById("log");
+    if (!day.length) { log.innerHTML = '<li class="log-empty">Заверши первый помидор, и он появится здесь.</li>'; return; }
+    log.innerHTML = "";
+    day.forEach(function (x) {
+      var li = document.createElement("li");
+      var a = document.createElement("span"); a.textContent = x.task || "Без названия";
+      var b = document.createElement("span"); b.textContent = new Date(x.at).toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" }) + " · " + x.min + " мин";
+      li.appendChild(a); li.appendChild(b);
+      log.appendChild(li);
+    });
+  }
+
+  // Controls
+  toggleBtn.addEventListener("click", function () { if (endAt) stop(); else start(); });
+  document.getElementById("reset").addEventListener("click", function () { setMode(mode); toggleBtn.textContent = "Старт"; });
+  document.getElementById("skip").addEventListener("click", function () { left = 0; complete(true); });
+  document.querySelectorAll("button[data-mode]").forEach(function (b) {
+    b.addEventListener("click", function () { setMode(b.dataset.mode); toggleBtn.textContent = "Старт"; });
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.target.closest && e.target.closest("input, textarea, select")) return;
+    if (e.code === "Space" && !(e.target.closest && e.target.closest("button"))) { e.preventDefault(); toggleBtn.click(); }
+    if (e.code === "KeyR") { setMode(mode); toggleBtn.textContent = "Старт"; }
+  });
+
+  function bindNum(id, key) {
+    var el = document.getElementById(id);
+    el.value = settings[key];
+    el.addEventListener("change", function () {
+      var v = Math.max(1, Math.min(+el.max, Math.round(+el.value) || settings[key]));
+      el.value = v;
+      settings[key] = v;
+      store("tm-pomo-settings", JSON.stringify(settings));
+      if (mode === key && !endAt) { setMode(mode); toggleBtn.textContent = "Старт"; }
+    });
+  }
+  bindNum("dFocus", "focus"); bindNum("dShort", "short"); bindNum("dLong", "long");
+  function bindToggle(id, key) {
+    var el = document.getElementById(id);
+    el.checked = settings[key];
+    el.addEventListener("change", function () { settings[key] = el.checked; store("tm-pomo-settings", JSON.stringify(settings)); });
+  }
+  bindToggle("autoNext", "auto"); bindToggle("sound", "sound");
+  document.getElementById("testSound").addEventListener("click", function () { unlockAudio(); chime(); });
+
+  setMode("focus");
+  renderDay();
+})();
+</script>
+</body>
+</html>
