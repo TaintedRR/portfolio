@@ -5,6 +5,9 @@
 window.PORTFOLIO = {
   name: "Тамерлан",
   role: "Frontend-разработчик",
+  // То же самое для английской версии сайта
+  nameEn: "Tamerlan",
+  roleEn: "Frontend developer",
 
   // Ник на GitHub (без github.com/)
   githubUser: "TaintedRR",

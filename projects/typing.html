@@ -62,7 +62,7 @@
     border-radius: var(--radius); background: var(--surface); border: 1px solid var(--cobalt);
     overflow: hidden; animation: pop 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
   }
-  @keyframes pop { from { transform: scale(0.97); opacity: 0; } }
+  @keyframes pop { from { transform: scale(0.97); } }
   .result > div { padding: 18px 20px; display: grid; gap: 2px; }
   .result > div + div { border-left: 1px solid var(--line); }
   .result span { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-faint); }
@@ -86,14 +86,15 @@
 <body>
 <header class="pbar">
   <div class="wrap pbar__inner">
-    <a class="pbar__back" href="../index.html">← <span>Портфолио</span></a>
-    <div class="pbar__title"><p class="eyebrow">Игры</p><h1>Тренажёр печати</h1></div>
+    <a class="pbar__back" href="../index.html">← <span data-i18n>Портфолио</span></a>
+    <div class="pbar__title"><p class="eyebrow" data-i18n>Игры</p><h1 data-i18n>Тренажёр печати</h1></div>
     <div class="pbar__actions">
-      <button class="btn btn--ghost btn--icon theme-toggle" type="button" data-theme-toggle aria-label="Переключить тему">
+      <button class="btn btn--ghost lang-toggle" type="button" data-lang-toggle aria-label="Сменить язык" data-i18n-attr="aria-label"><span data-l="ru">RU</span><span data-l="en">EN</span></button>
+      <button class="btn btn--ghost btn--icon theme-toggle" type="button" data-theme-toggle aria-label="Переключить тему" data-i18n-attr="aria-label">
         <svg class="i-moon" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
         <svg class="i-sun" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></g></svg>
       </button>
-      <a class="btn btn--sm" data-src="typing" href="https://github.com/"><svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m16 18 6-6-6-6M8 6l-6 6 6 6"/></svg><span class="pbar__src-label">Код на GitHub</span></a>
+      <a class="btn btn--sm" data-src="typing" href="https://github.com/"><svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m16 18 6-6-6-6M8 6l-6 6 6 6"/></svg><span class="pbar__src-label" data-i18n>Код на GitHub</span></a>
     </div>
   </div>
 </header>
@@ -101,41 +102,41 @@
 <main class="pmain">
   <div class="wrap typing">
     <div class="opts">
-      <div class="opts__group" role="group" aria-label="Язык">
-        <span class="label">Язык</span>
-        <button class="chip" type="button" data-lang="ru" aria-pressed="true">Русский</button>
+      <div class="opts__group" role="group" aria-label="Язык текста" data-i18n-attr="aria-label">
+        <span class="label" data-i18n>Текст</span>
+        <button class="chip" type="button" data-lang="ru" aria-pressed="true" data-i18n>Русский</button>
         <button class="chip" type="button" data-lang="en" aria-pressed="false">English</button>
       </div>
-      <div class="opts__group" role="group" aria-label="Время">
-        <span class="label">Время</span>
-        <button class="chip" type="button" data-time="15" aria-pressed="false">15 с</button>
-        <button class="chip" type="button" data-time="30" aria-pressed="true">30 с</button>
-        <button class="chip" type="button" data-time="60" aria-pressed="false">60 с</button>
+      <div class="opts__group" role="group" aria-label="Время" data-i18n-attr="aria-label">
+        <span class="label" data-i18n>Время</span>
+        <button class="chip" type="button" data-time="15" aria-pressed="false" data-i18n>15 с</button>
+        <button class="chip" type="button" data-time="30" aria-pressed="true" data-i18n>30 с</button>
+        <button class="chip" type="button" data-time="60" aria-pressed="false" data-i18n>60 с</button>
       </div>
     </div>
 
     <div class="live" aria-live="off">
-      <div class="live__item is-time"><span>Осталось</span><b id="lvTime">30</b></div>
-      <div class="live__item"><span>Знаков в минуту</span><b id="lvCpm">0</b></div>
-      <div class="live__item"><span>Слов в минуту</span><b id="lvWpm">0</b></div>
-      <div class="live__item"><span>Точность</span><b id="lvAcc">100%</b></div>
+      <div class="live__item is-time"><span data-i18n>Осталось</span><b id="lvTime">30</b></div>
+      <div class="live__item"><span data-i18n>Знаков в минуту</span><b id="lvCpm">0</b></div>
+      <div class="live__item"><span data-i18n>Слов в минуту</span><b id="lvWpm">0</b></div>
+      <div class="live__item"><span data-i18n>Точность</span><b id="lvAcc">100%</b></div>
     </div>
 
     <div class="area" id="area">
       <div class="viewport"><div class="text" id="text"></div></div>
-      <textarea class="hidden-input" id="input" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Поле для набора текста"></textarea>
-      <div class="focus-hint">Нажми сюда и начинай печатать</div>
+      <textarea class="hidden-input" id="input" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Поле для набора текста" data-i18n-attr="aria-label"></textarea>
+      <div class="focus-hint" data-i18n>Нажми сюда и начинай печатать</div>
     </div>
 
     <div class="row-btns">
-      <button class="btn btn--primary btn--sm" type="button" id="restart">Новый текст</button>
-      <span class="hint">Таймер стартует с первой буквы. <kbd>Esc</kbd> начинает заново.</span>
+      <button class="btn btn--primary btn--sm" type="button" id="restart" data-i18n>Новый текст</button>
+      <span class="hint" data-i18n>Таймер стартует с первой буквы. <kbd>Esc</kbd> начинает заново.</span>
     </div>
 
     <div id="resultBox"></div>
 
     <section>
-      <h2 class="sub">Последние попытки</h2>
+      <h2 class="sub" data-i18n>Последние попытки</h2>
       <div class="history-wrap" id="history"></div>
     </section>
   </div>
@@ -143,26 +144,68 @@
 
 <footer class="pfoot">
   <div class="wrap pfoot__inner">
-    <p class="label">Другие проекты</p>
+    <p class="label" data-i18n>Другие проекты</p>
     <div class="pfoot__list" data-project-nav="typing"></div>
   </div>
 </footer>
 
 <script>
 (function () {
+  var TM = window.TM;
+  var T = TM.t;
+  TM.addDict({
+    "Язык текста": "Text language",
+    "Текст": "Text",
+    "Русский": "Russian",
+    "Время": "Time",
+    "15 с": "15 s",
+    "30 с": "30 s",
+    "60 с": "60 s",
+    "{n} с": "{n} s",
+    "Осталось": "Time left",
+    "Знаков в минуту": "Characters per minute",
+    "Слов в минуту": "Words per minute",
+    "Точность": "Accuracy",
+    "Поле для набора текста": "Typing field",
+    "Нажми сюда и начинай печатать": "Click here and start typing",
+    "Новый текст": "New text",
+    "Таймер стартует с первой буквы. <kbd>Esc</kbd> начинает заново.": "The timer starts with the first letter. <kbd>Esc</kbd> restarts.",
+    "Последние попытки": "Recent attempts",
+    "новый рекорд": "new record",
+    "рекорд {n}": "best {n}",
+    "слово = 5 знаков": "word = 5 characters",
+    "{n} ошиб.": "{n} errors",
+    "русский": "Russian",
+    "английский": "English",
+    "Уровень профи: так печатают немногие.": "Pro level: few people type this fast.",
+    "Отличный результат, это выше среднего.": "Great result, that's above average.",
+    "Хорошая скорость. Ещё пара тренировок, и будет 250+.": "Good speed. A couple more sessions and you'll hit 250+.",
+    "Неплохое начало. Смотри на экран, а не на клавиатуру.": "A decent start. Look at the screen, not the keyboard.",
+    "Нажми «Новый текст» или Esc, чтобы попробовать ещё.": "Press “New text” or Esc to try again.",
+    "Здесь появятся твои результаты.": "Your results will show up here.",
+    "Когда": "When",
+    "Язык": "Language",
+    "Режим": "Mode",
+    "Зн/мин": "CPM",
+    "Сл/мин": "WPM"
+  });
+
   var WORDS = {
     ru: "и в не на я быть он с что а по это она этот к но они мы как из у который то за свой что весь год от так о для ты же все тот мочь вы человек такой его сказать только или ещё бы себя один как уже до время если сам когда другой вот говорить наш мой знать стать при чтобы дело жизнь кто первый очень два день её новый рука даже во со раз где там под можно ну какой после их работа без самый потом надо хотеть ли слово идти большой должен место иметь ничто сайт код экран кнопка проект интерфейс страница задача дизайн цвет текст строка функция данные город утро море книга окно дорога друг вопрос ответ мысль голос свет дом".split(" "),
     en: "the be to of and a in that have it for not on with he as you do at this but his by from they we say her she or an will my one all would there their what so up out if about who get which go me when make can like time no just him know take people into year your good some could them see other than then now look only come its over think also back after use two how our work first well way even new want because any these give day most us code screen button project page design color text line function data city morning sea book window road friend question answer light house fast simple clean".split(" ")
   };
-  var lang = "ru", duration = 30;
+  var lang = TM.lang(), duration = 30;
   var target = "", spans = [], typed = "";
   var startAt = 0, timer = 0, finished = false;
   var keystrokes = 0, errors = 0;
+  var lastResult = null;
 
   var area = document.getElementById("area");
   var textEl = document.getElementById("text");
   var input = document.getElementById("input");
-  var store = window.TM.store;
+  var store = TM.store;
+
+  document.querySelectorAll("[data-lang]").forEach(function (c) { c.setAttribute("aria-pressed", String(c.dataset.lang === lang)); });
 
   function makeText() {
     var list = WORDS[lang], out = [], prevW = "";
@@ -178,6 +221,7 @@
     clearInterval(timer);
     timer = 0; startAt = 0; finished = false;
     keystrokes = 0; errors = 0; typed = "";
+    lastResult = null;
     target = makeText();
     textEl.innerHTML = "";
     spans = Array.from(target).map(function (ch) {
@@ -271,6 +315,27 @@
     if (typed.length >= target.length) finish();
   });
 
+  function verdict(cpm) {
+    return cpm >= 400 ? "Уровень профи: так печатают немногие." :
+      cpm >= 250 ? "Отличный результат, это выше среднего." :
+      cpm >= 150 ? "Хорошая скорость. Ещё пара тренировок, и будет 250+." :
+      "Неплохое начало. Смотри на экран, а не на клавиатуру.";
+  }
+
+  function renderResult() {
+    var r = lastResult;
+    var box = document.getElementById("resultBox");
+    if (!r) { box.innerHTML = ""; return; }
+    box.innerHTML =
+      '<div class="result" role="status">' +
+        "<div><span>" + T("Знаков в минуту") + "</span><b>" + r.cpm + "</b><small>" + (r.isBest ? T("новый рекорд") : T("рекорд {n}").replace("{n}", r.bestPrev)) + "</small></div>" +
+        "<div><span>" + T("Слов в минуту") + "</span><b>" + r.wpm + "</b><small>" + T("слово = 5 знаков") + "</small></div>" +
+        "<div><span>" + T("Точность") + "</span><b>" + r.acc + "%</b><small>" + T("{n} ошиб.").replace("{n}", r.errors) + "</small></div>" +
+        "<div><span>" + T("Время") + "</span><b>" + T("{n} с").replace("{n}", Math.round(r.elapsed)) + "</b><small>" + T(r.lang === "ru" ? "русский" : "английский") + "</small></div>" +
+        '<div class="result__note">' + T(verdict(r.cpm)) + " " + T("Нажми «Новый текст» или Esc, чтобы попробовать ещё.") + "</div>" +
+      "</div>";
+  }
+
   function finish() {
     if (finished) return;
     finished = true;
@@ -283,18 +348,8 @@
     var bestPrev = parseInt(store(key + "-best"), 10) || 0;
     var isBest = s.cpm > bestPrev;
     if (isBest) store(key + "-best", String(s.cpm));
-    var verdict = s.cpm >= 400 ? "Уровень профи: так печатают немногие." :
-      s.cpm >= 250 ? "Отличный результат, это выше среднего." :
-      s.cpm >= 150 ? "Хорошая скорость. Ещё пара тренировок, и будет 250+." :
-      "Неплохое начало. Смотри на экран, а не на клавиатуру.";
-    document.getElementById("resultBox").innerHTML =
-      '<div class="result" role="status">' +
-        "<div><span>Знаков в минуту</span><b>" + s.cpm + "</b><small>" + (isBest ? "новый рекорд" : "рекорд " + bestPrev) + "</small></div>" +
-        "<div><span>Слов в минуту</span><b>" + s.wpm + "</b><small>слово = 5 знаков</small></div>" +
-        "<div><span>Точность</span><b>" + s.acc + "%</b><small>" + errors + " ошиб." + "</small></div>" +
-        "<div><span>Время</span><b>" + Math.round(s.elapsed) + " с</b><small>" + (lang === "ru" ? "русский" : "английский") + "</small></div>" +
-        '<div class="result__note">' + verdict + " Нажми «Новый текст» или Esc, чтобы попробовать ещё.</div>" +
-      "</div>";
+    lastResult = { cpm: s.cpm, wpm: s.wpm, acc: s.acc, elapsed: s.elapsed, errors: errors, lang: lang, isBest: isBest, bestPrev: bestPrev };
+    renderResult();
     saveHistory({ at: Date.now(), lang: lang, time: duration, cpm: s.cpm, wpm: s.wpm, acc: s.acc });
   }
 
@@ -310,11 +365,11 @@
   function renderHistory() {
     var h = loadHistory();
     var box = document.getElementById("history");
-    if (!h.length) { box.innerHTML = '<p class="history-empty">Здесь появятся твои результаты.</p>'; return; }
-    box.innerHTML = '<table class="history"><thead><tr><th>Когда</th><th>Язык</th><th>Режим</th><th>Зн/мин</th><th>Сл/мин</th><th>Точность</th></tr></thead><tbody>' +
+    if (!h.length) { box.innerHTML = '<p class="history-empty">' + T("Здесь появятся твои результаты.") + "</p>"; return; }
+    box.innerHTML = '<table class="history"><thead><tr><th>' + T("Когда") + "</th><th>" + T("Язык") + "</th><th>" + T("Режим") + "</th><th>" + T("Зн/мин") + "</th><th>" + T("Сл/мин") + "</th><th>" + T("Точность") + "</th></tr></thead><tbody>" +
       h.map(function (r) {
-        return "<tr><td>" + new Date(r.at).toLocaleString("ru-RU", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }) +
-          "</td><td>" + (r.lang === "ru" ? "RU" : "EN") + "</td><td>" + r.time + " с</td><td>" + r.cpm + "</td><td>" + r.wpm + "</td><td>" + r.acc + "%</td></tr>";
+        return "<tr><td>" + new Date(r.at).toLocaleString(TM.locale(), { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }) +
+          "</td><td>" + (r.lang === "ru" ? "RU" : "EN") + "</td><td>" + T("{n} с").replace("{n}", r.time) + "</td><td>" + r.cpm + "</td><td>" + r.wpm + "</td><td>" + r.acc + "%</td></tr>";
       }).join("") + "</tbody></table>";
   }
 
@@ -343,6 +398,8 @@
   }
   bindChips("lang", function (v) { lang = v; });
   bindChips("time", function (v) { duration = parseInt(v, 10); });
+
+  document.addEventListener("langchange", function () { renderResult(); renderHistory(); });
 
   reset();
   renderHistory();

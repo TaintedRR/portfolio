@@ -112,7 +112,7 @@
   .side h2 { font-family: var(--font-display); font-size: 18px; }
   .side p, .side li { color: var(--ink-soft); font-size: 15px; }
   .side ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
-  .keys { display: grid; grid-template-columns: repeat(3, 40px); grid-template-rows: repeat(2, 40px); gap: 6px; }
+  .keys { display: grid; grid-template-columns: repeat(3, 40px); grid-template-rows: repeat(2, 40px); gap: 6px; margin-top: 8px; }
   .keys button { border: 1px solid var(--line); border-bottom-width: 3px; border-radius: 8px; background: var(--surface); cursor: pointer; font-size: 16px; color: var(--ink-soft); }
   .keys button:active { transform: translateY(2px); border-bottom-width: 1px; }
   .keys button:nth-child(1) { grid-area: 1 / 2; }
@@ -126,14 +126,15 @@
 <body>
 <header class="pbar">
   <div class="wrap pbar__inner">
-    <a class="pbar__back" href="../index.html">← <span>Портфолио</span></a>
-    <div class="pbar__title"><p class="eyebrow">Игры</p><h1>2048</h1></div>
+    <a class="pbar__back" href="../index.html">← <span data-i18n>Портфолио</span></a>
+    <div class="pbar__title"><p class="eyebrow" data-i18n>Игры</p><h1>2048</h1></div>
     <div class="pbar__actions">
-      <button class="btn btn--ghost btn--icon theme-toggle" type="button" data-theme-toggle aria-label="Переключить тему">
+      <button class="btn btn--ghost lang-toggle" type="button" data-lang-toggle aria-label="Сменить язык" data-i18n-attr="aria-label"><span data-l="ru">RU</span><span data-l="en">EN</span></button>
+      <button class="btn btn--ghost btn--icon theme-toggle" type="button" data-theme-toggle aria-label="Переключить тему" data-i18n-attr="aria-label">
         <svg class="i-moon" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
         <svg class="i-sun" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></g></svg>
       </button>
-      <a class="btn btn--sm" data-src="2048" href="https://github.com/"><svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m16 18 6-6-6-6M8 6l-6 6 6 6"/></svg><span class="pbar__src-label">Код на GitHub</span></a>
+      <a class="btn btn--sm" data-src="2048" href="https://github.com/"><svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m16 18 6-6-6-6M8 6l-6 6 6 6"/></svg><span class="pbar__src-label" data-i18n>Код на GitHub</span></a>
     </div>
   </div>
 </header>
@@ -142,14 +143,14 @@
   <div class="wrap game">
     <div>
       <div class="scores">
-        <div class="score"><span>Счёт</span><b id="score">0</b></div>
-        <div class="score"><span>Рекорд</span><b id="best">0</b></div>
+        <div class="score"><span data-i18n>Счёт</span><b id="score">0</b></div>
+        <div class="score"><span data-i18n>Рекорд</span><b id="best">0</b></div>
       </div>
       <div class="controls">
-        <button class="btn btn--primary btn--sm" type="button" id="newGame">Новая игра</button>
-        <button class="btn btn--sm" type="button" id="undo" disabled>Отменить ход</button>
+        <button class="btn btn--primary btn--sm" type="button" id="newGame" data-i18n>Новая игра</button>
+        <button class="btn btn--sm" type="button" id="undo" disabled data-i18n>Отменить ход</button>
       </div>
-      <div class="board" id="board" tabindex="0" aria-label="Игровое поле 4 на 4. Управление стрелками или свайпами">
+      <div class="board" id="board" tabindex="0" aria-label="Игровое поле 4 на 4. Управление стрелками или свайпами" data-i18n-attr="aria-label">
         <div class="grid" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
         <div class="tiles" id="tiles"></div>
         <div class="overlay" id="overlay" hidden>
@@ -162,26 +163,26 @@
 
     <aside class="side">
       <div>
-        <h2>Как играть</h2>
+        <h2 data-i18n>Как играть</h2>
         <ul>
-          <li>Двигай плитки стрелками, клавишами WASD или свайпом.</li>
-          <li>Одинаковые числа при столкновении складываются.</li>
-          <li>Собери плитку 2048, чтобы победить.</li>
+          <li data-i18n>Двигай плитки стрелками, клавишами WASD или свайпом.</li>
+          <li data-i18n>Одинаковые числа при столкновении складываются.</li>
+          <li data-i18n>Собери плитку 2048, чтобы победить.</li>
         </ul>
       </div>
       <div>
-        <p class="label" style="margin-bottom:8px">Кнопки для мыши</p>
+        <p class="label" data-i18n>Кнопки для мыши</p>
         <div class="keys">
-          <button type="button" data-dir="up" aria-label="Вверх">↑</button>
-          <button type="button" data-dir="left" aria-label="Влево">←</button>
-          <button type="button" data-dir="down" aria-label="Вниз">↓</button>
-          <button type="button" data-dir="right" aria-label="Вправо">→</button>
+          <button type="button" data-dir="up" aria-label="Вверх" data-i18n-attr="aria-label">↑</button>
+          <button type="button" data-dir="left" aria-label="Влево" data-i18n-attr="aria-label">←</button>
+          <button type="button" data-dir="down" aria-label="Вниз" data-i18n-attr="aria-label">↓</button>
+          <button type="button" data-dir="right" aria-label="Вправо" data-i18n-attr="aria-label">→</button>
         </div>
       </div>
       <div>
-        <div class="stat-row"><span>Ходов в этой игре</span><b id="moves">0</b></div>
-        <div class="stat-row"><span>Лучшая плитка</span><b id="maxTile">2</b></div>
-        <div class="stat-row"><span>Сыграно игр</span><b id="games">0</b></div>
+        <div class="stat-row"><span data-i18n>Ходов в этой игре</span><b id="moves">0</b></div>
+        <div class="stat-row"><span data-i18n>Лучшая плитка</span><b id="maxTile">2</b></div>
+        <div class="stat-row"><span data-i18n>Сыграно игр</span><b id="games">0</b></div>
       </div>
     </aside>
   </div>
@@ -189,15 +190,44 @@
 
 <footer class="pfoot">
   <div class="wrap pfoot__inner">
-    <p class="label">Другие проекты</p>
+    <p class="label" data-i18n>Другие проекты</p>
     <div class="pfoot__list" data-project-nav="2048"></div>
   </div>
 </footer>
 
 <script>
 (function () {
+  var TM = window.TM;
+  var T = TM.t;
+  TM.addDict({
+    "Счёт": "Score",
+    "Рекорд": "Best",
+    "Новая игра": "New game",
+    "Отменить ход": "Undo",
+    "Игровое поле 4 на 4. Управление стрелками или свайпами": "4 by 4 game board. Use the arrow keys or swipe",
+    "Как играть": "How to play",
+    "Двигай плитки стрелками, клавишами WASD или свайпом.": "Move the tiles with the arrow keys, WASD or a swipe.",
+    "Одинаковые числа при столкновении складываются.": "Equal numbers merge when they collide.",
+    "Собери плитку 2048, чтобы победить.": "Reach the 2048 tile to win.",
+    "Кнопки для мыши": "Mouse controls",
+    "Вверх": "Up",
+    "Влево": "Left",
+    "Вниз": "Down",
+    "Вправо": "Right",
+    "Ходов в этой игре": "Moves this game",
+    "Лучшая плитка": "Best tile",
+    "Сыграно игр": "Games played",
+    "Победа! 2048": "You win! 2048",
+    "Счёт: {s}. Можно продолжить и побить рекорд.": "Score: {s}. Keep going to beat your record.",
+    "Играть дальше": "Keep playing",
+    "Ходов больше нет": "No moves left",
+    "Твой счёт: {s}.": "Your score: {s}.",
+    "Твой счёт: {s}. Это новый рекорд!": "Your score: {s}. That's a new record!",
+    "Сыграть ещё": "Play again"
+  });
+
   var N = 4;
-  var store = window.TM.store;
+  var store = TM.store;
   var tilesEl = document.getElementById("tiles");
   var boardEl = document.getElementById("board");
   var scoreEl = document.getElementById("score");
@@ -205,7 +235,7 @@
   var undoBtn = document.getElementById("undo");
   var overlay = document.getElementById("overlay");
 
-  var grid, score, moves, won, keepPlaying, prev, nextId = 1, busy = false;
+  var grid, score, moves, won, keepPlaying, prev, nextId = 1, busy = false, overlayKind = null;
   var best = parseInt(store("tm-2048-best"), 10) || 0;
   var games = parseInt(store("tm-2048-games"), 10) || 0;
 
@@ -396,19 +426,22 @@
       box.appendChild(el);
     });
     overlay.hidden = false;
-    box.firstChild.focus();
+    box.firstChild.focus({ preventScroll: true });
   }
-  function hideOverlay() { overlay.hidden = true; }
+  function hideOverlay() { overlay.hidden = true; overlayKind = null; }
   function showWin() {
-    showOverlay("Победа! 2048", "Счёт: " + score + ". Можно продолжить и побить рекорд.", [
-      { label: "Играть дальше", primary: true, run: function () { keepPlaying = true; hideOverlay(); saveGame(); boardEl.focus(); } },
-      { label: "Новая игра", run: function () { newGame(true); boardEl.focus(); } }
+    overlayKind = "win";
+    showOverlay(T("Победа! 2048"), T("Счёт: {s}. Можно продолжить и побить рекорд.").replace("{s}", score), [
+      { label: T("Играть дальше"), primary: true, run: function () { keepPlaying = true; hideOverlay(); saveGame(); boardEl.focus(); } },
+      { label: T("Новая игра"), run: function () { newGame(true); boardEl.focus(); } }
     ]);
   }
   function showLose() {
-    showOverlay("Ходов больше нет", "Твой счёт: " + score + (score >= best && score > 0 ? ". Это новый рекорд!" : "."), [
-      { label: "Сыграть ещё", primary: true, run: function () { newGame(true); boardEl.focus(); } },
-      { label: "Отменить ход", run: function () { undo(); boardEl.focus(); } }
+    overlayKind = "lose";
+    var msg = score >= best && score > 0 ? "Твой счёт: {s}. Это новый рекорд!" : "Твой счёт: {s}.";
+    showOverlay(T("Ходов больше нет"), T(msg).replace("{s}", score), [
+      { label: T("Сыграть ещё"), primary: true, run: function () { newGame(true); boardEl.focus(); } },
+      { label: T("Отменить ход"), run: function () { undo(); boardEl.focus(); } }
     ]);
   }
 
@@ -447,6 +480,11 @@
   });
   document.getElementById("newGame").addEventListener("click", function () { newGame(true); boardEl.focus({ preventScroll: true }); });
   undoBtn.addEventListener("click", undo);
+
+  document.addEventListener("langchange", function () {
+    if (overlayKind === "win") showWin();
+    else if (overlayKind === "lose") showLose();
+  });
 
   // Resume a saved game if there is one
   var saved;

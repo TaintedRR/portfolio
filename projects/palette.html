@@ -27,7 +27,7 @@
   .sw__btns button:hover { opacity: 1; background: color-mix(in srgb, currentColor 14%, transparent); }
   .sw__btns button[aria-pressed="true"] { opacity: 1; background: color-mix(in srgb, currentColor 20%, transparent); }
   .sw__btns svg { width: 18px; height: 18px; }
-  .sw.is-locked::after { content: "закреплён"; position: absolute; top: 14px; left: 14px; font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.75; }
+  .sw.is-locked::after { content: attr(data-locked); position: absolute; top: 14px; left: 14px; font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.75; }
   @media (max-width: 720px) {
     .swatches { grid-template-columns: minmax(0, 1fr); height: auto; min-height: 0; }
     .sw { flex-direction: row; flex-wrap: wrap; align-items: center; min-height: 86px; padding: 12px 14px; }
@@ -71,14 +71,15 @@
 <body>
 <header class="pbar">
   <div class="wrap pbar__inner">
-    <a class="pbar__back" href="../index.html">← <span>Портфолио</span></a>
-    <div class="pbar__title"><p class="eyebrow">Инструменты</p><h1>Генератор палитр</h1></div>
+    <a class="pbar__back" href="../index.html">← <span data-i18n>Портфолио</span></a>
+    <div class="pbar__title"><p class="eyebrow" data-i18n>Инструменты</p><h1 data-i18n>Генератор палитр</h1></div>
     <div class="pbar__actions">
-      <button class="btn btn--ghost btn--icon theme-toggle" type="button" data-theme-toggle aria-label="Переключить тему">
+      <button class="btn btn--ghost lang-toggle" type="button" data-lang-toggle aria-label="Сменить язык" data-i18n-attr="aria-label"><span data-l="ru">RU</span><span data-l="en">EN</span></button>
+      <button class="btn btn--ghost btn--icon theme-toggle" type="button" data-theme-toggle aria-label="Переключить тему" data-i18n-attr="aria-label">
         <svg class="i-moon" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
         <svg class="i-sun" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></g></svg>
       </button>
-      <a class="btn btn--sm" data-src="palette" href="https://github.com/"><svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m16 18 6-6-6-6M8 6l-6 6 6 6"/></svg><span class="pbar__src-label">Код на GitHub</span></a>
+      <a class="btn btn--sm" data-src="palette" href="https://github.com/"><svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m16 18 6-6-6-6M8 6l-6 6 6 6"/></svg><span class="pbar__src-label" data-i18n>Код на GitHub</span></a>
     </div>
   </div>
 </header>
@@ -86,16 +87,16 @@
 <main class="pmain">
   <div class="wrap">
     <div class="tools">
-      <div class="modes" role="group" aria-label="Тип гармонии">
-        <button class="chip" type="button" data-mode="random" aria-pressed="true">Случайная</button>
-        <button class="chip" type="button" data-mode="analog" aria-pressed="false">Аналоговая</button>
-        <button class="chip" type="button" data-mode="complement" aria-pressed="false">Комплементарная</button>
-        <button class="chip" type="button" data-mode="triad" aria-pressed="false">Триада</button>
-        <button class="chip" type="button" data-mode="mono" aria-pressed="false">Монохром</button>
+      <div class="modes" role="group" aria-label="Тип гармонии" data-i18n-attr="aria-label">
+        <button class="chip" type="button" data-mode="random" aria-pressed="true" data-i18n>Случайная</button>
+        <button class="chip" type="button" data-mode="analog" aria-pressed="false" data-i18n>Аналоговая</button>
+        <button class="chip" type="button" data-mode="complement" aria-pressed="false" data-i18n>Комплементарная</button>
+        <button class="chip" type="button" data-mode="triad" aria-pressed="false" data-i18n>Триада</button>
+        <button class="chip" type="button" data-mode="mono" aria-pressed="false" data-i18n>Монохром</button>
       </div>
       <div class="tools__right">
-        <button class="btn btn--primary btn--sm" type="button" id="gen">Сгенерировать <kbd>Пробел</kbd></button>
-        <button class="btn btn--sm" type="button" id="saveBtn">Сохранить</button>
+        <button class="btn btn--primary btn--sm" type="button" id="gen" data-i18n>Сгенерировать <kbd>Пробел</kbd></button>
+        <button class="btn btn--sm" type="button" id="saveBtn" data-i18n>Сохранить</button>
       </div>
     </div>
 
@@ -103,29 +104,29 @@
 
     <div class="below">
       <section class="panel">
-        <h2>Палитра в интерфейсе</h2>
+        <h2 data-i18n>Палитра в интерфейсе</h2>
         <div class="mock" id="mock">
-          <div class="mock__nav"><b>Студия</b><span>Работы</span><span>Цены</span><span>Контакты</span></div>
+          <div class="mock__nav"><b data-i18n>Студия</b><span data-i18n>Работы</span><span data-i18n>Цены</span><span data-i18n>Контакты</span></div>
           <div class="mock__body">
-            <h3>Дизайн, который запоминают</h3>
-            <p>Так палитра выглядит на настоящей странице: фон, текст, акцентная кнопка и карточки.</p>
-            <div class="mock__btns"><span class="mock__btn">Заказать</span><span class="mock__btn mock__btn--alt">Портфолио</span></div>
+            <h3 data-i18n>Дизайн, который запоминают</h3>
+            <p data-i18n>Так палитра выглядит на настоящей странице: фон, текст, акцентная кнопка и карточки.</p>
+            <div class="mock__btns"><span class="mock__btn" data-i18n>Заказать</span><span class="mock__btn mock__btn--alt" data-i18n>Портфолио</span></div>
             <div class="mock__cards"><span></span><span></span><span></span></div>
           </div>
         </div>
       </section>
 
       <section class="panel">
-        <h2>Экспорт</h2>
+        <h2 data-i18n>Экспорт</h2>
         <div class="export">
           <pre id="cssOut"></pre>
           <div class="export__btns">
-            <button class="btn btn--sm" type="button" id="copyCss">Копировать CSS</button>
-            <button class="btn btn--ghost btn--sm" type="button" id="copyHex">Копировать HEX</button>
+            <button class="btn btn--sm" type="button" id="copyCss" data-i18n>Копировать CSS</button>
+            <button class="btn btn--ghost btn--sm" type="button" id="copyHex" data-i18n>Копировать HEX</button>
           </div>
         </div>
         <div class="saved">
-          <p class="label">Сохранённые палитры</p>
+          <p class="label" data-i18n>Сохранённые палитры</p>
           <div id="savedList"></div>
         </div>
       </section>
@@ -135,14 +136,55 @@
 
 <footer class="pfoot">
   <div class="wrap pfoot__inner">
-    <p class="label">Другие проекты</p>
+    <p class="label" data-i18n>Другие проекты</p>
     <div class="pfoot__list" data-project-nav="palette"></div>
   </div>
 </footer>
 
 <script>
 (function () {
-  var store = window.TM.store;
+  var TM = window.TM;
+  var T = TM.t;
+  TM.addDict({
+    "Тип гармонии": "Harmony type",
+    "Случайная": "Random",
+    "Аналоговая": "Analogous",
+    "Комплементарная": "Complementary",
+    "Триада": "Triad",
+    "Монохром": "Monochrome",
+    "Сгенерировать <kbd>Пробел</kbd>": "Generate <kbd>Space</kbd>",
+    "Сохранить": "Save",
+    "Палитра в интерфейсе": "Palette in an interface",
+    "Студия": "Studio",
+    "Работы": "Work",
+    "Цены": "Pricing",
+    "Контакты": "Contact",
+    "Дизайн, который запоминают": "Design people remember",
+    "Так палитра выглядит на настоящей странице: фон, текст, акцентная кнопка и карточки.": "This is how the palette looks on a real page: background, text, accent button and cards.",
+    "Заказать": "Order",
+    "Экспорт": "Export",
+    "Копировать CSS": "Copy CSS",
+    "Копировать HEX": "Copy HEX",
+    "Сохранённые палитры": "Saved palettes",
+    "Контраст белого текста по WCAG": "WCAG contrast of white text",
+    "Контраст чёрного текста по WCAG": "WCAG contrast of black text",
+    "AA крупный": "AA large",
+    "не проходит": "fails",
+    "Скопировать": "Copy",
+    "Открепить цвет": "Unlock color",
+    "Закрепить цвет": "Lock color",
+    "Скопировать HEX": "Copy HEX",
+    "закреплён": "locked",
+    "CSS-переменные скопированы": "CSS variables copied",
+    "HEX-коды скопированы": "HEX codes copied",
+    "Нажми «Сохранить», чтобы добавить палитру сюда.": "Press “Save” to add a palette here.",
+    "Загрузить палитру {p}": "Load palette {p}",
+    "Удалить палитру": "Delete palette",
+    "Палитра сохранена": "Palette saved",
+    "Палитра загружена": "Palette loaded"
+  });
+
+  var store = TM.store;
   var mode = "random";
   var colors = [
     { h: 226, s: 48, l: 22, locked: false },
@@ -170,11 +212,10 @@
     return 0.2126 * a[0] + 0.7152 * a[1] + 0.0722 * a[2];
   }
   function contrast(l1, l2) { var hi = Math.max(l1, l2), lo = Math.min(l1, l2); return (hi + 0.05) / (lo + 0.05); }
-  function grade(r) { return r >= 7 ? "AAA" : r >= 4.5 ? "AA" : r >= 3 ? "AA крупный" : "не проходит"; }
+  function grade(r) { return r >= 7 ? "AAA" : r >= 4.5 ? "AA" : T(r >= 3 ? "AA крупный" : "не проходит"); }
 
   function generate() {
     var base = rnd(0, 360);
-    var free = colors.filter(function (c) { return !c.locked; });
     var locked = colors.filter(function (c) { return c.locked; });
     if (locked.length) base = locked[0].h;
     var plan;
@@ -223,13 +264,13 @@
       var cw = contrast(L, 1), cb = contrast(L, 0);
       var useWhite = cw >= cb;
       var ratio = useWhite ? cw : cb;
-      return '<div class="sw' + (c.locked ? " is-locked" : "") + '" style="--c:' + hex(c) + ";--t:" + (useWhite ? "#FFFFFF" : "#0B0F24") + '">' +
-        '<span class="sw__badge" title="Контраст ' + (useWhite ? "белого" : "чёрного") + ' текста по WCAG">' + ratio.toFixed(1) + ":1 · " + grade(ratio) + "</span>" +
-        '<button class="sw__hex" type="button" data-copy-i="' + i + '" title="Скопировать">' + hex(c) + "</button>" +
+      return '<div class="sw' + (c.locked ? " is-locked" : "") + '" data-locked="' + T("закреплён") + '" style="--c:' + hex(c) + ";--t:" + (useWhite ? "#FFFFFF" : "#0B0F24") + '">' +
+        '<span class="sw__badge" title="' + T(useWhite ? "Контраст белого текста по WCAG" : "Контраст чёрного текста по WCAG") + '">' + ratio.toFixed(1) + ":1 · " + grade(ratio) + "</span>" +
+        '<button class="sw__hex" type="button" data-copy-i="' + i + '" title="' + T("Скопировать") + '">' + hex(c) + "</button>" +
         '<span class="sw__hsl">hsl(' + c.h + ", " + c.s + "%, " + c.l + "%)</span>" +
         '<div class="sw__btns">' +
-          '<button type="button" data-lock="' + i + '" aria-pressed="' + c.locked + '" aria-label="' + (c.locked ? "Открепить цвет" : "Закрепить цвет") + '">' + (c.locked ? ICON.lock : ICON.unlock) + "</button>" +
-          '<button type="button" data-copy-i="' + i + '" aria-label="Скопировать HEX">' + ICON.copy + "</button>" +
+          '<button type="button" data-lock="' + i + '" aria-pressed="' + c.locked + '" aria-label="' + T(c.locked ? "Открепить цвет" : "Закрепить цвет") + '">' + (c.locked ? ICON.lock : ICON.unlock) + "</button>" +
+          '<button type="button" data-copy-i="' + i + '" aria-label="' + T("Скопировать HEX") + '">' + ICON.copy + "</button>" +
         "</div></div>";
     }).join("");
     box.innerHTML = html;
@@ -264,7 +305,7 @@
     var copyBtn = e.target.closest("[data-copy-i]");
     if (copyBtn) {
       var h = hex(colors[+copyBtn.dataset.copyI]);
-      window.TM.copy(h, "Скопировано: " + h);
+      TM.copy(h, T("Скопировано") + ": " + h);
     }
   });
 
@@ -283,10 +324,10 @@
     generate();
   });
   document.getElementById("copyCss").addEventListener("click", function () {
-    window.TM.copy(cssText(), "CSS-переменные скопированы", document.getElementById("cssOut"));
+    TM.copy(cssText(), T("CSS-переменные скопированы"), document.getElementById("cssOut"));
   });
   document.getElementById("copyHex").addEventListener("click", function () {
-    window.TM.copy(colors.map(hex).join(", "), "HEX-коды скопированы");
+    TM.copy(colors.map(hex).join(", "), T("HEX-коды скопированы"));
   });
 
   // Saved palettes
@@ -294,11 +335,11 @@
   function renderSaved() {
     var list = loadSaved();
     var el = document.getElementById("savedList");
-    if (!list.length) { el.innerHTML = '<p class="saved-empty">Нажми «Сохранить», чтобы добавить палитру сюда.</p>'; return; }
+    if (!list.length) { el.innerHTML = '<p class="saved-empty">' + T("Нажми «Сохранить», чтобы добавить палитру сюда.") + "</p>"; return; }
     el.innerHTML = list.map(function (p, i) {
-      return '<div class="saved__item"><button class="saved__strip" type="button" data-load="' + i + '" aria-label="Загрузить палитру ' + p.join(", ") + '">' +
+      return '<div class="saved__item"><button class="saved__strip" type="button" data-load="' + i + '" aria-label="' + T("Загрузить палитру {p}").replace("{p}", p.join(", ")) + '">' +
         p.map(function (h) { return '<span style="--c:' + h + '"></span>'; }).join("") +
-        '</button><button class="saved__del" type="button" data-del="' + i + '" aria-label="Удалить палитру">×</button></div>';
+        '</button><button class="saved__del" type="button" data-del="' + i + '" aria-label="' + T("Удалить палитру") + '">×</button></div>';
     }).join("");
   }
   function hexToHsl(h) {
@@ -317,15 +358,17 @@
     list.unshift(colors.map(hex));
     store("tm-palettes", JSON.stringify(list.slice(0, 8)));
     renderSaved();
-    window.TM.toast("Палитра сохранена");
+    TM.toast(T("Палитра сохранена"));
   });
   document.getElementById("savedList").addEventListener("click", function (e) {
     var load = e.target.closest("[data-load]");
     var del = e.target.closest("[data-del]");
     var list = loadSaved();
-    if (load) { colors = list[+load.dataset.load].map(hexToHsl); render(); window.TM.toast("Палитра загружена"); }
+    if (load) { colors = list[+load.dataset.load].map(hexToHsl); render(); TM.toast(T("Палитра загружена")); }
     if (del) { list.splice(+del.dataset.del, 1); store("tm-palettes", JSON.stringify(list)); renderSaved(); }
   });
+
+  document.addEventListener("langchange", function () { render(); renderSaved(); });
 
   render();
   renderSaved();

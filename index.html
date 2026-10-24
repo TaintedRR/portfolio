@@ -35,25 +35,26 @@
 
 <header class="site-header" id="top">
   <div class="wrap site-header__inner">
-    <a class="logo" href="#top" aria-label="Наверх">
+    <a class="logo" href="#top" aria-label="Наверх" data-i18n-attr="aria-label">
       <span class="logo__mark">TM</span>
       <span class="logo__name" data-text="name">Тамерлан</span>
     </a>
-    <nav class="nav" id="nav" aria-label="Разделы">
-      <a href="#work">Проекты</a>
-      <a href="#projects">Мини-проекты</a>
-      <a href="#about">Обо мне</a>
-      <a href="#stack">Стек</a>
-      <a href="#process">Процесс</a>
-      <a href="#contact">Контакты</a>
+    <nav class="nav" id="nav" aria-label="Разделы" data-i18n-attr="aria-label">
+      <a href="#work" data-i18n>Проекты</a>
+      <a href="#projects" data-i18n>Мини-проекты</a>
+      <a href="#about" data-i18n>Обо мне</a>
+      <a href="#stack" data-i18n>Стек</a>
+      <a href="#process" data-i18n>Процесс</a>
+      <a href="#contact" data-i18n>Контакты</a>
     </nav>
     <div class="site-header__actions">
       <a class="btn btn--ghost btn--icon" data-link="github" href="https://github.com/" aria-label="GitHub"><svg><use href="#i-github"/></svg></a>
-      <button class="btn btn--ghost btn--icon theme-toggle" type="button" data-theme-toggle aria-label="Переключить тему">
+      <button class="btn btn--ghost lang-toggle" type="button" data-lang-toggle aria-label="Сменить язык" data-i18n-attr="aria-label"><span data-l="ru">RU</span><span data-l="en">EN</span></button>
+      <button class="btn btn--ghost btn--icon theme-toggle" type="button" data-theme-toggle aria-label="Переключить тему" data-i18n-attr="aria-label">
         <svg class="i-moon"><use href="#i-moon"/></svg><svg class="i-sun"><use href="#i-sun"/></svg>
       </button>
-      <a class="btn btn--primary btn--sm header-cta" href="#contact">Написать</a>
-      <button class="btn btn--ghost btn--icon burger" type="button" id="burger" aria-expanded="false" aria-controls="nav" aria-label="Меню">
+      <a class="btn btn--primary btn--sm header-cta" href="#contact" data-i18n>Написать</a>
+      <button class="btn btn--ghost btn--icon burger" type="button" id="burger" aria-expanded="false" aria-controls="nav" aria-label="Меню" data-i18n-attr="aria-label">
         <span></span><span></span><span></span>
       </button>
     </div>
@@ -64,7 +65,7 @@
   <!-- HERO -->
   <section class="hero">
     <div class="wrap">
-      <p class="hero__status"><span class="pulse" aria-hidden="true"></span> Открыт к новым проектам</p>
+      <p class="hero__status"><span class="pulse" aria-hidden="true"></span> <span data-i18n>Открыт к новым проектам</span></p>
       <h1 class="kinetic" id="kinetic">
         <span class="sr-only" data-text="name">Тамерлан</span>
         <span class="kinetic__word" aria-hidden="true">Тамерлан</span>
@@ -72,37 +73,38 @@
 
       <div class="hero__grid">
         <div class="hero__copy">
-          <p class="hero__lead"><span data-text="role">Frontend-разработчик</span>. Делаю быстрые сайты и веб-приложения, которые <span class="mark">приятно открывать</span> на любом экране.</p>
+          <p class="hero__lead"><span data-text="role">Frontend-разработчик</span>. <span data-i18n>Делаю быстрые сайты и веб-приложения, которые <span class="mark">приятно открывать</span> на любом экране.</span></p>
           <div class="hero__cta">
-            <a class="btn btn--primary magnetic" href="#work">Смотреть проекты <svg><use href="#i-arrow"/></svg></a>
-            <a class="btn magnetic" data-link="github" href="https://github.com/"><svg><use href="#i-github"/></svg> Мой GitHub</a>
+            <a class="btn btn--primary magnetic" href="#work"><span data-i18n>Смотреть проекты</span> <svg><use href="#i-arrow"/></svg></a>
+            <a class="btn magnetic" data-link="github" href="https://github.com/"><svg><use href="#i-github"/></svg> <span data-i18n>Мой GitHub</span></a>
             <a class="btn btn--ghost magnetic" data-link="telegram" href="https://t.me/"><svg><use href="#i-send"/></svg> Telegram</a>
           </div>
           <dl class="facts">
-            <div><dt>6</dt><dd>мини-проектов можно открыть прямо здесь</dd></div>
-            <div><dt>0</dt><dd>библиотек: только HTML, CSS и&nbsp;JS</dd></div>
-            <div><dt>2</dt><dd>темы оформления, переключатель вверху</dd></div>
+            <div><dt>6</dt><dd data-i18n>мини-проектов можно открыть прямо здесь</dd></div>
+            <div><dt>0</dt><dd data-i18n>библиотек: только HTML, CSS и JS</dd></div>
+            <div><dt>2</dt><dd data-i18n>языка и 2 темы, переключатели вверху</dd></div>
           </dl>
         </div>
 
-        <div class="terminal" aria-label="Интерактивный терминал">
+        <div class="terminal" aria-label="Интерактивный терминал" data-i18n-attr="aria-label">
           <div class="terminal__bar">
             <span class="terminal__dots" aria-hidden="true"><i></i><i></i><i></i></span>
             <span class="terminal__title">guest@portfolio: ~</span>
           </div>
           <div class="terminal__body" id="termOut" aria-live="polite">
             <div class="t-line"><span class="t-prompt">$</span> whoami</div>
-            <div class="t-line t-out"><span data-text="name">Тамерлан</span>, <span data-text="role">Frontend-разработчик</span>. Люблю чистый JavaScript, анимации и быстрые сайты.</div>
+            <div class="t-line t-out"><span data-text="name">Тамерлан</span>, <span data-text="role">Frontend-разработчик</span>. <span data-i18n>Люблю чистый JavaScript, анимации и быстрые сайты.</span></div>
             <div class="t-line"><span class="t-prompt">$</span> ls projects/</div>
             <div class="t-line t-out t-cols">kanban  2048  typing  budget  palette  pomodoro</div>
-            <div class="t-line t-dim">Введи <b>help</b>, чтобы увидеть команды. Попробуй <b>open 2048</b>.</div>
+            <div class="t-line t-dim" data-i18n>Введи <b>help</b>, чтобы увидеть команды. Попробуй <b>open 2048</b>.</div>
           </div>
           <form class="terminal__input" id="termForm" autocomplete="off">
             <label class="t-prompt" for="termIn">$</label>
-            <input id="termIn" type="text" spellcheck="false" autocapitalize="off" autocorrect="off" placeholder="введи команду…" aria-label="Команда терминала">
+            <input id="termIn" type="text" spellcheck="false" autocapitalize="off" autocorrect="off" placeholder="введи команду…" aria-label="Команда терминала" data-i18n-attr="placeholder,aria-label">
           </form>
-          <div class="terminal__chips" aria-label="Быстрые команды">
+          <div class="terminal__chips" aria-label="Быстрые команды" data-i18n-attr="aria-label">
             <button type="button" data-cmd="help">help</button>
+            <button type="button" data-cmd="work">work</button>
             <button type="button" data-cmd="projects">projects</button>
             <button type="button" data-cmd="open 2048">open 2048</button>
             <button type="button" data-cmd="contact">contact</button>
@@ -117,30 +119,30 @@
   <section class="section section--lead" id="work">
     <div class="wrap">
       <header class="section__head">
-        <p class="eyebrow">Проекты</p>
-        <h2>Основные работы</h2>
-        <p class="section__lead">Интернет-магазин и Telegram-бот для приёма заказов: от вёрстки до серверной части.</p>
+        <p class="eyebrow" data-i18n>Проекты</p>
+        <h2 data-i18n>Основные работы</h2>
+        <p class="section__lead" data-i18n>Интернет-магазин и Telegram-бот для приёма заказов: от вёрстки до серверной части.</p>
       </header>
       <div class="projects projects--work">
         <article class="pcard pcard--big">
           <a class="pcard__preview" href="https://taintedrr.github.io/myfirstsite/" tabindex="-1" aria-hidden="true">
             <div class="pv wv--shop">
-              <div class="wv-bar"><i></i><b>Маркет</b><span class="wv-search"></span><span class="wv-cart">3</span></div>
+              <div class="wv-bar"><i></i><b data-i18n>Маркет</b><span class="wv-search"></span><span class="wv-cart">3</span></div>
               <div class="wv-grid">
-                <div><i style="--c:var(--cobalt)"></i><b></b><s>2 490 ₽</s></div>
-                <div><i style="--c:var(--warn)"></i><b></b><s>890 ₽</s></div>
-                <div><i style="--c:var(--good)"></i><b></b><s>5 990 ₽</s></div>
-                <div><i style="--c:var(--bad)"></i><b></b><s>1 290 ₽</s></div>
+                <div><i style="--c:var(--cobalt)"></i><b></b><s>$24.90</s></div>
+                <div><i style="--c:var(--warn)"></i><b></b><s>$8.90</s></div>
+                <div><i style="--c:var(--good)"></i><b></b><s>$59.00</s></div>
+                <div><i style="--c:var(--bad)"></i><b></b><s>$12.90</s></div>
               </div>
             </div>
           </a>
           <div class="pcard__body">
-            <div class="pcard__meta"><span>Веб-сайт</span><span>HTML5 · CSS3 · JavaScript</span></div>
-            <h3>E-commerce маркетплейс</h3>
-            <p>Каталог товаров, корзина и адаптивный интерфейс, одинаково удобный на телефоне и компьютере.</p>
+            <div class="pcard__meta"><span data-i18n>Веб-сайт</span><span>HTML5 · CSS3 · JavaScript</span></div>
+            <h3 data-i18n>E-commerce маркетплейс</h3>
+            <p data-i18n>Каталог товаров, корзина и адаптивный интерфейс, одинаково удобный на телефоне и компьютере.</p>
             <div class="pcard__actions">
-              <a class="btn btn--primary btn--sm" href="https://taintedrr.github.io/myfirstsite/">Открыть сайт <svg><use href="#i-out"/></svg></a>
-              <a class="btn btn--ghost btn--sm" href="https://github.com/TaintedRR/myfirstsite"><svg><use href="#i-code"/></svg> Код</a>
+              <a class="btn btn--primary btn--sm" href="https://taintedrr.github.io/myfirstsite/"><span data-i18n>Открыть сайт</span> <svg><use href="#i-out"/></svg></a>
+              <a class="btn btn--ghost btn--sm" href="https://github.com/TaintedRR/myfirstsite"><svg><use href="#i-code"/></svg> <span data-i18n>Код</span></a>
             </div>
           </div>
         </article>
@@ -149,28 +151,28 @@
           <a class="pcard__preview" href="https://t.me/taintedrrbot" tabindex="-1" aria-hidden="true">
             <div class="pv wv--bot">
               <div class="wv-chat">
-                <div class="wv-head"><i></i><b>@taintedrrbot</b><span>бот</span></div>
-                <p class="wv-msg">Привет! Что закажем сегодня?</p>
-                <div class="wv-kb"><span>Пицца</span><span>Бургеры</span><span>Напитки</span><span>Корзина · 3</span></div>
-                <p class="wv-msg wv-msg--me">Открыть меню</p>
+                <div class="wv-head"><i></i><b>@taintedrrbot</b><span data-i18n>бот</span></div>
+                <p class="wv-msg" data-i18n>Привет! Что закажем сегодня?</p>
+                <div class="wv-kb"><span data-i18n>Пицца</span><span data-i18n>Бургеры</span><span data-i18n>Напитки</span><span data-i18n>Корзина · 3</span></div>
+                <p class="wv-msg wv-msg--me" data-i18n>Открыть меню</p>
               </div>
               <div class="wv-app">
-                <b>Меню</b>
-                <div class="wv-item"><i style="--c:var(--warn)"></i><span>Маргарита</span><em>590 ₽</em></div>
-                <div class="wv-item"><i style="--c:var(--bad)"></i><span>Бургер</span><em>450 ₽</em></div>
-                <div class="wv-item"><i style="--c:var(--good)"></i><span>Лимонад</span><em>190 ₽</em></div>
-                <div class="wv-pay">Оплатить 1 230 ₽</div>
+                <b data-i18n>Меню</b>
+                <div class="wv-item"><i style="--c:var(--warn)"></i><span data-i18n>Маргарита</span><em>$8.90</em></div>
+                <div class="wv-item"><i style="--c:var(--bad)"></i><span data-i18n>Бургер</span><em>$6.50</em></div>
+                <div class="wv-item"><i style="--c:var(--good)"></i><span data-i18n>Лимонад</span><em>$2.90</em></div>
+                <div class="wv-pay" data-i18n>Оплатить $18.30</div>
               </div>
             </div>
           </a>
           <div class="pcard__body">
             <div class="pcard__meta"><span>Telegram</span><span>Python · aiogram 3.x · WebApp</span></div>
-            <h3>Telegram-бот и Mini App</h3>
-            <p>Бот для приёма заказов с интерактивным меню и удобным Mini App прямо внутри Telegram.</p>
-            <p class="pcard__note">Демо-сервер запускается по запросу. Чтобы проверить бота вживую, напиши мне в Telegram.</p>
+            <h3 data-i18n>Telegram-бот и Mini App</h3>
+            <p data-i18n>Бот для приёма заказов с интерактивным меню и удобным Mini App прямо внутри Telegram.</p>
+            <p class="pcard__note" data-i18n>Демо-сервер запускается по запросу. Чтобы проверить бота вживую, напиши мне в Telegram.</p>
             <div class="pcard__actions">
-              <a class="btn btn--primary btn--sm" href="https://t.me/taintedrrbot">Запустить бота <svg><use href="#i-out"/></svg></a>
-              <a class="btn btn--ghost btn--sm" href="https://github.com/TaintedRR/telegrambot"><svg><use href="#i-code"/></svg> Код</a>
+              <a class="btn btn--primary btn--sm" href="https://t.me/taintedrrbot"><span data-i18n>Запустить бота</span> <svg><use href="#i-out"/></svg></a>
+              <a class="btn btn--ghost btn--sm" href="https://github.com/TaintedRR/telegrambot"><svg><use href="#i-code"/></svg> <span data-i18n>Код</span></a>
             </div>
           </div>
         </article>
@@ -182,34 +184,34 @@
   <section class="section section--follow" id="projects">
     <div class="wrap">
       <header class="section__head">
-        <p class="eyebrow">Мини-проекты</p>
-        <h2>Шесть демо, которые можно потрогать прямо сейчас</h2>
-        <p class="section__lead">Каждый проект открывается отдельной страницей и работает без сервера. Открой демо или посмотри код на GitHub.</p>
+        <p class="eyebrow" data-i18n>Мини-проекты</p>
+        <h2 data-i18n>Шесть демо, которые можно потрогать прямо сейчас</h2>
+        <p class="section__lead" data-i18n>Каждый проект открывается отдельной страницей и работает без сервера. Открой демо или посмотри код на GitHub.</p>
       </header>
 
-      <div class="filters" role="toolbar" aria-label="Фильтр проектов">
-        <button class="chip" type="button" data-filter="all" aria-pressed="true">Все <small>6</small></button>
-        <button class="chip" type="button" data-filter="Продуктивность" aria-pressed="false">Продуктивность <small>2</small></button>
-        <button class="chip" type="button" data-filter="Игры" aria-pressed="false">Игры <small>2</small></button>
-        <button class="chip" type="button" data-filter="Инструменты" aria-pressed="false">Инструменты <small>2</small></button>
+      <div class="filters" role="toolbar" aria-label="Фильтр проектов" data-i18n-attr="aria-label">
+        <button class="chip" type="button" data-filter="all" aria-pressed="true"><span data-i18n>Все</span> <small>6</small></button>
+        <button class="chip" type="button" data-filter="Продуктивность" aria-pressed="false"><span data-i18n>Продуктивность</span> <small>2</small></button>
+        <button class="chip" type="button" data-filter="Игры" aria-pressed="false"><span data-i18n>Игры</span> <small>2</small></button>
+        <button class="chip" type="button" data-filter="Инструменты" aria-pressed="false"><span data-i18n>Инструменты</span> <small>2</small></button>
       </div>
 
       <div class="projects" id="projectGrid">
         <article class="pcard" data-cat="Продуктивность">
           <a class="pcard__preview" href="projects/kanban.html" tabindex="-1" aria-hidden="true">
             <div class="pv pv--kanban">
-              <div class="pv-col"><b>Нужно</b><i></i><i class="w2"></i><i class="w3"></i></div>
-              <div class="pv-col"><b>В работе</b><i class="hl"></i><i class="w2"></i></div>
-              <div class="pv-col"><b>Готово</b><i class="done"></i><i class="done w3"></i><i class="done w2"></i></div>
+              <div class="pv-col"><b data-i18n>Нужно</b><i></i><i class="w2"></i><i class="w3"></i></div>
+              <div class="pv-col"><b data-i18n>В работе</b><i class="hl"></i><i class="w2"></i></div>
+              <div class="pv-col"><b data-i18n>Готово</b><i class="done"></i><i class="done w3"></i><i class="done w2"></i></div>
             </div>
           </a>
           <div class="pcard__body">
-            <div class="pcard__meta"><span>Продуктивность</span><span>Drag &amp; Drop · localStorage</span></div>
-            <h3>Канбан-доска</h3>
-            <p>Задачи в трёх колонках: перетаскивание, приоритеты, поиск и прогресс. Доска сохраняется в браузере.</p>
+            <div class="pcard__meta"><span data-i18n>Продуктивность</span><span>Drag &amp; Drop · localStorage</span></div>
+            <h3 data-i18n>Канбан-доска</h3>
+            <p data-i18n>Задачи в трёх колонках: перетаскивание, приоритеты, поиск и прогресс. Доска сохраняется в браузере.</p>
             <div class="pcard__actions">
-              <a class="btn btn--primary btn--sm" href="projects/kanban.html">Открыть демо <svg><use href="#i-arrow"/></svg></a>
-              <a class="btn btn--ghost btn--sm" data-src="kanban" href="https://github.com/"><svg><use href="#i-code"/></svg> Код</a>
+              <a class="btn btn--primary btn--sm" href="projects/kanban.html"><span data-i18n>Открыть демо</span> <svg><use href="#i-arrow"/></svg></a>
+              <a class="btn btn--ghost btn--sm" data-src="kanban" href="https://github.com/"><svg><use href="#i-code"/></svg> <span data-i18n>Код</span></a>
             </div>
           </div>
         </article>
@@ -224,12 +226,12 @@
             </div>
           </a>
           <div class="pcard__body">
-            <div class="pcard__meta"><span>Игры</span><span>Анимации · Touch</span></div>
+            <div class="pcard__meta"><span data-i18n>Игры</span><span data-i18n>Анимации · Touch</span></div>
             <h3>2048</h3>
-            <p>Головоломка с плавным движением плиток, свайпами на телефоне, отменой хода и рекордом.</p>
+            <p data-i18n>Головоломка с плавным движением плиток, свайпами на телефоне, отменой хода и рекордом.</p>
             <div class="pcard__actions">
-              <a class="btn btn--primary btn--sm" href="projects/2048.html">Играть <svg><use href="#i-arrow"/></svg></a>
-              <a class="btn btn--ghost btn--sm" data-src="2048" href="https://github.com/"><svg><use href="#i-code"/></svg> Код</a>
+              <a class="btn btn--primary btn--sm" href="projects/2048.html"><span data-i18n>Играть</span> <svg><use href="#i-arrow"/></svg></a>
+              <a class="btn btn--ghost btn--sm" data-src="2048" href="https://github.com/"><svg><use href="#i-code"/></svg> <span data-i18n>Код</span></a>
             </div>
           </div>
         </article>
@@ -237,17 +239,17 @@
         <article class="pcard" data-cat="Игры">
           <a class="pcard__preview" href="projects/typing.html" tabindex="-1" aria-hidden="true">
             <div class="pv pv--typing">
-              <p><span class="ok">Съешь же ещё этих мяг</span><span class="err">r</span><span class="ok">их фра</span><span class="cur"></span><span class="todo">нцузских булок, да выпей чаю.</span></p>
-              <div class="pv-stats"><span><b>342</b> зн/мин</span><span><b>97%</b> точность</span><span><b>0:18</b></span></div>
+              <p data-i18n><span class="ok">Съешь же ещё этих мяг</span><span class="err">r</span><span class="ok">их фра</span><span class="cur"></span><span class="todo">нцузских булок, да выпей чаю.</span></p>
+              <div class="pv-stats"><span><b>342</b> <span data-i18n>зн/мин</span></span><span><b>97%</b> <span data-i18n>точность</span></span><span><b>0:18</b></span></div>
             </div>
           </a>
           <div class="pcard__body">
-            <div class="pcard__meta"><span>Игры</span><span>Input events · Таймеры</span></div>
-            <h3>Тренажёр печати</h3>
-            <p>Считает скорость в знаках в минуту и точность. Русский и английский тексты, режимы на 15, 30 и 60 секунд.</p>
+            <div class="pcard__meta"><span data-i18n>Игры</span><span data-i18n>Input events · Таймеры</span></div>
+            <h3 data-i18n>Тренажёр печати</h3>
+            <p data-i18n>Считает скорость в знаках в минуту и точность. Русский и английский тексты, режимы на 15, 30 и 60 секунд.</p>
             <div class="pcard__actions">
-              <a class="btn btn--primary btn--sm" href="projects/typing.html">Проверить скорость <svg><use href="#i-arrow"/></svg></a>
-              <a class="btn btn--ghost btn--sm" data-src="typing" href="https://github.com/"><svg><use href="#i-code"/></svg> Код</a>
+              <a class="btn btn--primary btn--sm" href="projects/typing.html"><span data-i18n>Проверить скорость</span> <svg><use href="#i-arrow"/></svg></a>
+              <a class="btn btn--ghost btn--sm" data-src="typing" href="https://github.com/"><svg><use href="#i-code"/></svg> <span data-i18n>Код</span></a>
             </div>
           </div>
         </article>
@@ -255,22 +257,22 @@
         <article class="pcard" data-cat="Инструменты">
           <a class="pcard__preview" href="projects/budget.html" tabindex="-1" aria-hidden="true">
             <div class="pv pv--budget">
-              <div class="pv-donut"><span>48 250 ₽</span></div>
+              <div class="pv-donut"><span>$1,727</span></div>
               <ul>
-                <li><i style="--c:#2a78d6"></i>Еда<b>18 400</b></li>
-                <li><i style="--c:#eb6834"></i>Жильё<b>15 000</b></li>
-                <li><i style="--c:#1baf7a"></i>Транспорт<b>6 350</b></li>
-                <li><i style="--c:#eda100"></i>Досуг<b>8 500</b></li>
+                <li><i style="--c:#2a78d6"></i><span data-i18n>Еда</span><b>$410</b></li>
+                <li><i style="--c:#eb6834"></i><span data-i18n>Жильё</span><b>$1,100</b></li>
+                <li><i style="--c:#1baf7a"></i><span data-i18n>Транспорт</span><b>$108</b></li>
+                <li><i style="--c:#eda100"></i><span data-i18n>Досуг</span><b>$109</b></li>
               </ul>
             </div>
           </a>
           <div class="pcard__body">
-            <div class="pcard__meta"><span>Инструменты</span><span>Canvas · Intl API</span></div>
-            <h3>Трекер расходов</h3>
-            <p>Доходы и траты по категориям, баланс за месяц и круговая диаграмма, нарисованная на Canvas.</p>
+            <div class="pcard__meta"><span data-i18n>Инструменты</span><span>Canvas · Intl API</span></div>
+            <h3 data-i18n>Трекер расходов</h3>
+            <p data-i18n>Доходы и траты в долларах по категориям, баланс за месяц и круговая диаграмма, нарисованная на Canvas.</p>
             <div class="pcard__actions">
-              <a class="btn btn--primary btn--sm" href="projects/budget.html">Открыть демо <svg><use href="#i-arrow"/></svg></a>
-              <a class="btn btn--ghost btn--sm" data-src="budget" href="https://github.com/"><svg><use href="#i-code"/></svg> Код</a>
+              <a class="btn btn--primary btn--sm" href="projects/budget.html"><span data-i18n>Открыть демо</span> <svg><use href="#i-arrow"/></svg></a>
+              <a class="btn btn--ghost btn--sm" data-src="budget" href="https://github.com/"><svg><use href="#i-code"/></svg> <span data-i18n>Код</span></a>
             </div>
           </div>
         </article>
@@ -286,12 +288,12 @@
             </div>
           </a>
           <div class="pcard__body">
-            <div class="pcard__meta"><span>Инструменты</span><span>HSL · WCAG</span></div>
-            <h3>Генератор палитр</h3>
-            <p>Цветовые схемы по правилам гармонии, проверка контраста по WCAG и экспорт в CSS-переменные.</p>
+            <div class="pcard__meta"><span data-i18n>Инструменты</span><span>HSL · WCAG</span></div>
+            <h3 data-i18n>Генератор палитр</h3>
+            <p data-i18n>Цветовые схемы по правилам гармонии, проверка контраста по WCAG и экспорт в CSS-переменные.</p>
             <div class="pcard__actions">
-              <a class="btn btn--primary btn--sm" href="projects/palette.html">Открыть демо <svg><use href="#i-arrow"/></svg></a>
-              <a class="btn btn--ghost btn--sm" data-src="palette" href="https://github.com/"><svg><use href="#i-code"/></svg> Код</a>
+              <a class="btn btn--primary btn--sm" href="projects/palette.html"><span data-i18n>Открыть демо</span> <svg><use href="#i-arrow"/></svg></a>
+              <a class="btn btn--ghost btn--sm" data-src="palette" href="https://github.com/"><svg><use href="#i-code"/></svg> <span data-i18n>Код</span></a>
             </div>
           </div>
         </article>
@@ -299,25 +301,25 @@
         <article class="pcard" data-cat="Продуктивность">
           <a class="pcard__preview" href="projects/pomodoro.html" tabindex="-1" aria-hidden="true">
             <div class="pv pv--pomodoro">
-              <div class="pv-ring"><span>18:42<small>Фокус</small></span></div>
+              <div class="pv-ring"><span>18:42<small data-i18n>Фокус</small></span></div>
               <div class="pv-dots"><i class="on"></i><i class="on"></i><i></i><i></i></div>
             </div>
           </a>
           <div class="pcard__body">
-            <div class="pcard__meta"><span>Продуктивность</span><span>Web Audio · SVG</span></div>
-            <h3>Pomodoro-таймер</h3>
-            <p>Циклы фокуса и перерывов, кольцо прогресса, звуковой сигнал и статистика за день.</p>
+            <div class="pcard__meta"><span data-i18n>Продуктивность</span><span>Web Audio · SVG</span></div>
+            <h3 data-i18n>Pomodoro-таймер</h3>
+            <p data-i18n>Циклы фокуса и перерывов, кольцо прогресса, звуковой сигнал и статистика за день.</p>
             <div class="pcard__actions">
-              <a class="btn btn--primary btn--sm" href="projects/pomodoro.html">Открыть демо <svg><use href="#i-arrow"/></svg></a>
-              <a class="btn btn--ghost btn--sm" data-src="pomodoro" href="https://github.com/"><svg><use href="#i-code"/></svg> Код</a>
+              <a class="btn btn--primary btn--sm" href="projects/pomodoro.html"><span data-i18n>Открыть демо</span> <svg><use href="#i-arrow"/></svg></a>
+              <a class="btn btn--ghost btn--sm" data-src="pomodoro" href="https://github.com/"><svg><use href="#i-code"/></svg> <span data-i18n>Код</span></a>
             </div>
           </div>
         </article>
       </div>
 
       <div class="projects__more">
-        <p>Больше кода и экспериментов у меня на GitHub.</p>
-        <a class="btn btn--ink magnetic" data-link="github" href="https://github.com/"><svg><use href="#i-github"/></svg> Все репозитории <svg><use href="#i-out"/></svg></a>
+        <p data-i18n>Больше кода и экспериментов у меня на GitHub.</p>
+        <a class="btn btn--ink magnetic" data-link="github" href="https://github.com/"><svg><use href="#i-github"/></svg> <span data-i18n>Все репозитории</span> <svg><use href="#i-out"/></svg></a>
       </div>
     </div>
   </section>
@@ -326,23 +328,23 @@
   <section class="section section--alt" id="about">
     <div class="wrap about">
       <header class="section__head">
-        <p class="eyebrow">Обо мне</p>
-        <h2>Делаю интерфейсы, в которых всё понятно с первого клика</h2>
+        <p class="eyebrow" data-i18n>Обо мне</p>
+        <h2 data-i18n>Делаю интерфейсы, в которых всё понятно с первого клика</h2>
       </header>
       <div class="about__body">
-        <p class="about__text">Меня зовут <span data-text="name">Тамерлан</span>, я frontend-разработчик. Верстаю адаптивные сайты, собираю веб-приложения и оживляю их анимацией. Все проекты на этой странице я написал с нуля, без шаблонов и библиотек, чтобы было видно, как я работаю с логикой, состоянием и мелкими деталями.</p>
+        <p class="about__text"><span data-i18n>Меня зовут</span> <span data-text="name">Тамерлан</span>, <span data-i18n>я frontend-разработчик. Верстаю адаптивные сайты, собираю веб-приложения и оживляю их анимацией. Все проекты на этой странице я написал с нуля, без шаблонов и библиотек, чтобы было видно, как я работаю с логикой, состоянием и мелкими деталями.</span></p>
         <ul class="services">
           <li>
-            <h3>Лендинги и сайты</h3>
-            <p>Адаптивная вёрстка по макету из Figma, анимации и быстрая загрузка.</p>
+            <h3 data-i18n>Лендинги и сайты</h3>
+            <p data-i18n>Адаптивная вёрстка по макету из Figma, анимации и быстрая загрузка.</p>
           </li>
           <li>
-            <h3>Веб-приложения</h3>
-            <p>Интерфейсы с состоянием: формы, фильтры, дашборды и личные кабинеты.</p>
+            <h3 data-i18n>Веб-приложения</h3>
+            <p data-i18n>Интерфейсы с состоянием: формы, фильтры, дашборды и личные кабинеты.</p>
           </li>
           <li>
-            <h3>Интерактив</h3>
-            <p>Мини-игры, калькуляторы и конфигураторы, которые удерживают посетителя.</p>
+            <h3 data-i18n>Интерактив</h3>
+            <p data-i18n>Мини-игры, калькуляторы и конфигураторы, которые удерживают посетителя.</p>
           </li>
         </ul>
       </div>
@@ -353,35 +355,35 @@
   <section class="section" id="stack">
     <div class="wrap">
       <header class="section__head">
-        <p class="eyebrow">Стек</p>
-        <h2>Чем я пользуюсь каждый день</h2>
-        <p class="section__lead">Шкала показывает уверенность от 1 до 5.</p>
+        <p class="eyebrow" data-i18n>Стек</p>
+        <h2 data-i18n>Чем я пользуюсь каждый день</h2>
+        <p class="section__lead" data-i18n>Шкала показывает уверенность от 1 до 5.</p>
       </header>
       <div class="stack">
         <div class="stack__group">
-          <h3>Основа</h3>
+          <h3 data-i18n>Основа</h3>
           <ul>
-            <li><span class="stack__name">HTML</span><span class="stack__note">семантика, доступность</span><span class="meter" data-level="5"></span></li>
-            <li><span class="stack__name">CSS</span><span class="stack__note">Grid, Flexbox, анимации</span><span class="meter" data-level="5"></span></li>
+            <li><span class="stack__name">HTML</span><span class="stack__note" data-i18n>семантика, доступность</span><span class="meter" data-level="5"></span></li>
+            <li><span class="stack__name">CSS</span><span class="stack__note" data-i18n>Grid, Flexbox, анимации</span><span class="meter" data-level="5"></span></li>
             <li><span class="stack__name">JavaScript</span><span class="stack__note">ES2023, DOM, async</span><span class="meter" data-level="4"></span></li>
-            <li><span class="stack__name">TypeScript</span><span class="stack__note">типы, дженерики</span><span class="meter" data-level="3"></span></li>
+            <li><span class="stack__name">TypeScript</span><span class="stack__note" data-i18n>типы, дженерики</span><span class="meter" data-level="3"></span></li>
           </ul>
         </div>
         <div class="stack__group">
-          <h3>Фреймворки</h3>
+          <h3 data-i18n>Фреймворки</h3>
           <ul>
-            <li><span class="stack__name">React</span><span class="stack__note">хуки, роутинг</span><span class="meter" data-level="4"></span></li>
+            <li><span class="stack__name">React</span><span class="stack__note" data-i18n>хуки, роутинг</span><span class="meter" data-level="4"></span></li>
             <li><span class="stack__name">Next.js</span><span class="stack__note">SSR, App Router</span><span class="meter" data-level="3"></span></li>
-            <li><span class="stack__name">Tailwind CSS</span><span class="stack__note">дизайн-системы</span><span class="meter" data-level="4"></span></li>
-            <li><span class="stack__name">Sass</span><span class="stack__note">БЭМ, миксины</span><span class="meter" data-level="4"></span></li>
+            <li><span class="stack__name">Tailwind CSS</span><span class="stack__note" data-i18n>дизайн-системы</span><span class="meter" data-level="4"></span></li>
+            <li><span class="stack__name">Sass</span><span class="stack__note" data-i18n>БЭМ, миксины</span><span class="meter" data-level="4"></span></li>
           </ul>
         </div>
         <div class="stack__group">
-          <h3>Инструменты</h3>
+          <h3 data-i18n>Инструменты</h3>
           <ul>
-            <li><span class="stack__name">Git и GitHub</span><span class="stack__note">ветки, PR, Pages</span><span class="meter" data-level="4"></span></li>
-            <li><span class="stack__name">Vite и npm</span><span class="stack__note">сборка, пакеты</span><span class="meter" data-level="4"></span></li>
-            <li><span class="stack__name">Figma</span><span class="stack__note">макеты, Dev Mode</span><span class="meter" data-level="3"></span></li>
+            <li><span class="stack__name" data-i18n>Git и GitHub</span><span class="stack__note" data-i18n>ветки, PR, Pages</span><span class="meter" data-level="4"></span></li>
+            <li><span class="stack__name" data-i18n>Vite и npm</span><span class="stack__note" data-i18n>сборка, пакеты</span><span class="meter" data-level="4"></span></li>
+            <li><span class="stack__name">Figma</span><span class="stack__note" data-i18n>макеты, Dev Mode</span><span class="meter" data-level="3"></span></li>
             <li><span class="stack__name">REST API</span><span class="stack__note">fetch, JSON</span><span class="meter" data-level="4"></span></li>
           </ul>
         </div>
@@ -393,29 +395,29 @@
   <section class="section section--alt" id="process">
     <div class="wrap">
       <header class="section__head">
-        <p class="eyebrow">Процесс</p>
-        <h2>Как проходит работа над проектом</h2>
+        <p class="eyebrow" data-i18n>Процесс</p>
+        <h2 data-i18n>Как проходит работа над проектом</h2>
       </header>
       <ol class="steps">
         <li>
           <span class="steps__n">1</span>
-          <h3>Разбираюсь в задаче</h3>
-          <p>Уточняю цели, аудиторию и сроки. Фиксируем объём работ и стоимость.</p>
+          <h3 data-i18n>Разбираюсь в задаче</h3>
+          <p data-i18n>Уточняю цели, аудиторию и сроки. Фиксируем объём работ и стоимость.</p>
         </li>
         <li>
           <span class="steps__n">2</span>
-          <h3>Прототип</h3>
-          <p>Собираю структуру и первый кликабельный вариант, чтобы обсудить направление.</p>
+          <h3 data-i18n>Прототип</h3>
+          <p data-i18n>Собираю структуру и первый кликабельный вариант, чтобы обсудить направление.</p>
         </li>
         <li>
           <span class="steps__n">3</span>
-          <h3>Разработка</h3>
-          <p>Пишу код и показываю промежуточные версии. Правки вносим по ходу.</p>
+          <h3 data-i18n>Разработка</h3>
+          <p data-i18n>Пишу код и показываю промежуточные версии. Правки вносим по ходу.</p>
         </li>
         <li>
           <span class="steps__n">4</span>
-          <h3>Запуск</h3>
-          <p>Выкладываю сайт, проверяю на телефонах и передаю исходники.</p>
+          <h3 data-i18n>Запуск</h3>
+          <p data-i18n>Выкладываю сайт, проверяю на телефонах и передаю исходники.</p>
         </li>
       </ol>
     </div>
@@ -425,9 +427,9 @@
   <section class="section contact" id="contact">
     <div class="wrap contact__grid">
       <div class="contact__intro">
-        <p class="eyebrow">Контакты</p>
-        <h2 class="contact__title">Есть идея или задача? <span class="mark">Напиши мне.</span></h2>
-        <p class="section__lead">Отвечаю в течение дня. Можно сразу в Telegram или собрать короткую заявку: она превратится в готовое сообщение.</p>
+        <p class="eyebrow" data-i18n>Контакты</p>
+        <h2 class="contact__title" data-i18n>Есть идея или задача? <span class="mark">Напиши мне.</span></h2>
+        <p class="section__lead" data-i18n>Отвечаю в течение дня. Можно сразу в Telegram или собрать короткую заявку: она превратится в готовое сообщение.</p>
         <ul class="links">
           <li data-optional>
             <a class="links__row" data-link="telegram" href="https://t.me/">
@@ -441,8 +443,8 @@
           </li>
           <li data-optional>
             <div class="links__row">
-              <svg><use href="#i-mail"/></svg><span class="links__label">Почта</span><span class="links__value" id="emailText" data-text="email">hello@example.com</span>
-              <button class="btn btn--ghost btn--sm" type="button" data-copy="email" data-copy-target="emailText"><svg><use href="#i-copy"/></svg> Копировать</button>
+              <svg><use href="#i-mail"/></svg><span class="links__label" data-i18n>Почта</span><span class="links__value" id="emailText" data-text="email">hello@example.com</span>
+              <button class="btn btn--ghost btn--sm" type="button" data-copy="email" data-copy-target="emailText"><svg><use href="#i-copy"/></svg> <span data-i18n>Копировать</span></button>
             </div>
           </li>
           <li data-optional>
@@ -454,38 +456,38 @@
       </div>
 
       <form class="brief" id="brief" novalidate>
-        <h3>Заявка за минуту</h3>
-        <label class="field" for="bName"><span>Как тебя зовут</span>
-          <input class="input" id="bName" name="name" type="text" placeholder="Анна" required>
+        <h3 data-i18n>Заявка за минуту</h3>
+        <label class="field" for="bName"><span data-i18n>Как тебя зовут</span>
+          <input class="input" id="bName" name="name" type="text" placeholder="Анна" data-i18n-attr="placeholder" required>
         </label>
         <fieldset class="field brief__types">
-          <legend class="label">Что нужно сделать</legend>
+          <legend class="label" data-i18n>Что нужно сделать</legend>
           <div class="brief__chips">
-            <label class="chip-radio"><input type="radio" name="type" id="bType1" value="Лендинг" checked><span>Лендинг</span></label>
-            <label class="chip-radio"><input type="radio" name="type" id="bType2" value="Сайт компании"><span>Сайт компании</span></label>
-            <label class="chip-radio"><input type="radio" name="type" id="bType3" value="Веб-приложение"><span>Веб-приложение</span></label>
-            <label class="chip-radio"><input type="radio" name="type" id="bType4" value="Другое"><span>Другое</span></label>
+            <label class="chip-radio"><input type="radio" name="type" id="bType1" value="landing" checked><span data-i18n>Лендинг</span></label>
+            <label class="chip-radio"><input type="radio" name="type" id="bType2" value="company"><span data-i18n>Сайт компании</span></label>
+            <label class="chip-radio"><input type="radio" name="type" id="bType3" value="webapp"><span data-i18n>Веб-приложение</span></label>
+            <label class="chip-radio"><input type="radio" name="type" id="bType4" value="other"><span data-i18n>Другое</span></label>
           </div>
         </fieldset>
-        <label class="field" for="bBudget"><span>Бюджет</span>
+        <label class="field" for="bBudget"><span data-i18n>Бюджет</span>
           <select class="input" id="bBudget" name="budget">
-            <option>Обсудим</option>
-            <option>до 30 000 ₽</option>
-            <option>30 000 – 80 000 ₽</option>
-            <option>от 80 000 ₽</option>
+            <option value="discuss" data-i18n>Обсудим</option>
+            <option value="lt500" data-i18n>до $500</option>
+            <option value="500-1500">$500 – $1,500</option>
+            <option value="gt1500" data-i18n>от $1,500</option>
           </select>
         </label>
-        <label class="field" for="bMsg"><span>Коротко о задаче</span>
-          <textarea class="input" id="bMsg" name="message" placeholder="Нужен сайт для студии йоги: расписание, цены и запись." required></textarea>
+        <label class="field" for="bMsg"><span data-i18n>Коротко о задаче</span>
+          <textarea class="input" id="bMsg" name="message" placeholder="Нужен сайт для студии йоги: расписание, цены и запись." data-i18n-attr="placeholder" required></textarea>
         </label>
         <p class="brief__error" id="briefError" role="alert" hidden></p>
-        <button class="btn btn--primary" type="submit"><svg><use href="#i-copy"/></svg> Собрать и скопировать</button>
+        <button class="btn btn--primary" type="submit"><svg><use href="#i-copy"/></svg> <span data-i18n>Собрать и скопировать</span></button>
         <div class="brief__done" id="briefDone" hidden>
-          <p><b>Сообщение скопировано.</b> Вставь его в чат или письмо:</p>
+          <p data-i18n><b>Сообщение скопировано.</b> Вставь его в чат или письмо:</p>
           <pre class="brief__preview" id="briefPreview"></pre>
           <div class="brief__send">
-            <a class="btn btn--sm" data-link="telegram" href="https://t.me/"><svg><use href="#i-send"/></svg> Открыть Telegram</a>
-            <a class="btn btn--ghost btn--sm" data-link="email" href="mailto:"><svg><use href="#i-mail"/></svg> Написать на почту</a>
+            <a class="btn btn--sm" data-link="telegram" href="https://t.me/"><svg><use href="#i-send"/></svg> <span data-i18n>Открыть Telegram</span></a>
+            <a class="btn btn--ghost btn--sm" data-link="email" href="mailto:"><svg><use href="#i-mail"/></svg> <span data-i18n>Написать на почту</span></a>
           </div>
         </div>
       </form>
@@ -495,11 +497,11 @@
 
 <footer class="site-footer">
   <div class="wrap site-footer__inner">
-    <p>© <span data-text="year">2026</span> <span data-text="name">Тамерлан</span>. Сайт написан вручную на HTML, CSS и JavaScript.</p>
+    <p>© <span data-text="year">2026</span> <span data-text="name">Тамерлан</span>. <span data-i18n>Сайт написан вручную на HTML, CSS и JavaScript.</span></p>
     <div class="site-footer__links">
       <a data-link="github" href="https://github.com/">GitHub</a>
       <a data-link="telegram" href="https://t.me/">Telegram</a>
-      <a href="#top">Наверх ↑</a>
+      <a href="#top" data-i18n>Наверх ↑</a>
     </div>
   </div>
 </footer>

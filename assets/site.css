@@ -106,6 +106,10 @@ body::before {
 .burger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
 .burger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
 
+/* Phones: the hero already links to GitHub, so the header keeps only the switches */
+@media (max-width: 440px) {
+  .site-header__actions .btn--icon[data-link="github"] { display: none; }
+}
 @media (max-width: 1080px) {
   .burger { display: inline-flex; }
   .header-cta { display: none; }
@@ -510,7 +514,7 @@ body::before {
   width: 118px;
   height: 118px;
   border-radius: 50%;
-  background: conic-gradient(#2a78d6 0 38%, var(--surface-2) 0 38.6%, #eb6834 0 69.6%, var(--surface-2) 0 70.2%, #1baf7a 0 83%, var(--surface-2) 0 83.6%, #eda100 0 100%);
+  background: conic-gradient(#2a78d6 0 23.7%, var(--surface-2) 0 24.3%, #eb6834 0 87.4%, var(--surface-2) 0 88%, #1baf7a 0 93.7%, var(--surface-2) 0 94.3%, #eda100 0 100%);
   display: grid;
   place-items: center;
 }

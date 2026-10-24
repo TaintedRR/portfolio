@@ -46,7 +46,7 @@
   .card:hover { box-shadow: var(--shadow); }
   .card.is-dragging { opacity: 0.4; transform: rotate(1.5deg); }
   .card.is-new { animation: pop 0.35s cubic-bezier(0.2, 0.7, 0.2, 1); }
-  @keyframes pop { from { transform: scale(0.94); opacity: 0.4; } }
+  @keyframes pop { from { transform: scale(0.94); } }
   .card__title { font-weight: 600; font-size: 15px; line-height: 1.4; overflow-wrap: anywhere; outline: none; border-radius: 4px; }
   .card__title[contenteditable="true"] { background: var(--cobalt-soft); padding: 2px 4px; margin: -2px -4px; cursor: text; }
   .col[data-col="done"] .card__title { color: var(--ink-soft); text-decoration: line-through; text-decoration-color: var(--ink-faint); }
@@ -68,21 +68,21 @@
   .add .input { min-height: 40px; padding: 8px 12px; font-size: 14px; }
   .add .btn { min-height: 40px; }
   .hint { margin-top: 20px; font-size: 13px; color: var(--ink-faint); }
-  .hint kbd { font-family: var(--font-mono); font-size: 12px; padding: 1px 6px; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 4px; background: var(--surface); }
   .reset-row { display: flex; gap: 8px; margin-left: auto; }
 </style>
 </head>
 <body>
 <header class="pbar">
   <div class="wrap pbar__inner">
-    <a class="pbar__back" href="../index.html">← <span>Портфолио</span></a>
-    <div class="pbar__title"><p class="eyebrow">Продуктивность</p><h1>Канбан-доска</h1></div>
+    <a class="pbar__back" href="../index.html">← <span data-i18n>Портфолио</span></a>
+    <div class="pbar__title"><p class="eyebrow" data-i18n>Продуктивность</p><h1 data-i18n>Канбан-доска</h1></div>
     <div class="pbar__actions">
-      <button class="btn btn--ghost btn--icon theme-toggle" type="button" data-theme-toggle aria-label="Переключить тему">
+      <button class="btn btn--ghost lang-toggle" type="button" data-lang-toggle aria-label="Сменить язык" data-i18n-attr="aria-label"><span data-l="ru">RU</span><span data-l="en">EN</span></button>
+      <button class="btn btn--ghost btn--icon theme-toggle" type="button" data-theme-toggle aria-label="Переключить тему" data-i18n-attr="aria-label">
         <svg class="i-moon" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
         <svg class="i-sun" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></g></svg>
       </button>
-      <a class="btn btn--sm" data-src="kanban" href="https://github.com/"><svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m16 18 6-6-6-6M8 6l-6 6 6 6"/></svg><span class="pbar__src-label">Код на GitHub</span></a>
+      <a class="btn btn--sm" data-src="kanban" href="https://github.com/"><svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m16 18 6-6-6-6M8 6l-6 6 6 6"/></svg><span class="pbar__src-label" data-i18n>Код на GitHub</span></a>
     </div>
   </div>
 </header>
@@ -90,52 +90,94 @@
 <main class="pmain">
   <div class="wrap">
     <div class="toolbar">
-      <input class="input search" id="search" type="search" placeholder="Поиск по задачам" aria-label="Поиск по задачам">
+      <input class="input search" id="search" type="search" placeholder="Поиск по задачам" aria-label="Поиск по задачам" data-i18n-attr="placeholder,aria-label">
       <div class="progress-box">
         <div class="progress-box__bar"><span id="progFill"></span></div>
         <span class="progress-box__label" id="progLabel">0 из 0 готово</span>
       </div>
       <div class="reset-row">
-        <button class="btn btn--ghost btn--sm" type="button" id="resetBtn">Вернуть пример</button>
-        <button class="btn btn--ghost btn--sm" type="button" id="clearBtn">Очистить доску</button>
+        <button class="btn btn--ghost btn--sm" type="button" id="resetBtn" data-i18n>Вернуть пример</button>
+        <button class="btn btn--ghost btn--sm" type="button" id="clearBtn" data-i18n>Очистить доску</button>
       </div>
     </div>
 
     <div class="board" id="board">
       <section class="col" data-col="todo">
-        <div class="col__head"><span class="col__dot"></span><h2>Нужно сделать</h2><span class="col__count">0</span></div>
+        <div class="col__head"><span class="col__dot"></span><h2 data-i18n>Нужно сделать</h2><span class="col__count">0</span></div>
         <div class="list"></div>
-        <form class="add"><input class="input" id="add-todo" placeholder="Новая задача…" aria-label="Новая задача в «Нужно сделать»"><button class="btn btn--sm btn--primary" type="submit" aria-label="Добавить">+</button></form>
+        <form class="add"><input class="input" id="add-todo" placeholder="Новая задача…" aria-label="Новая задача в «Нужно сделать»" data-i18n-attr="placeholder,aria-label"><button class="btn btn--sm btn--primary" type="submit" aria-label="Добавить" data-i18n-attr="aria-label">+</button></form>
       </section>
       <section class="col" data-col="doing">
-        <div class="col__head"><span class="col__dot"></span><h2>В работе</h2><span class="col__count">0</span></div>
+        <div class="col__head"><span class="col__dot"></span><h2 data-i18n>В работе</h2><span class="col__count">0</span></div>
         <div class="list"></div>
-        <form class="add"><input class="input" id="add-doing" placeholder="Новая задача…" aria-label="Новая задача в «В работе»"><button class="btn btn--sm btn--primary" type="submit" aria-label="Добавить">+</button></form>
+        <form class="add"><input class="input" id="add-doing" placeholder="Новая задача…" aria-label="Новая задача в «В работе»" data-i18n-attr="placeholder,aria-label"><button class="btn btn--sm btn--primary" type="submit" aria-label="Добавить" data-i18n-attr="aria-label">+</button></form>
       </section>
       <section class="col" data-col="done">
-        <div class="col__head"><span class="col__dot"></span><h2>Готово</h2><span class="col__count">0</span></div>
+        <div class="col__head"><span class="col__dot"></span><h2 data-i18n>Готово</h2><span class="col__count">0</span></div>
         <div class="list"></div>
-        <form class="add"><input class="input" id="add-done" placeholder="Новая задача…" aria-label="Новая задача в «Готово»"><button class="btn btn--sm btn--primary" type="submit" aria-label="Добавить">+</button></form>
+        <form class="add"><input class="input" id="add-done" placeholder="Новая задача…" aria-label="Новая задача в «Готово»" data-i18n-attr="placeholder,aria-label"><button class="btn btn--sm btn--primary" type="submit" aria-label="Добавить" data-i18n-attr="aria-label">+</button></form>
       </section>
     </div>
-    <p class="hint">Перетаскивай карточки мышью или двигай стрелками. Двойной клик по названию переименует задачу, клик по метке сменит приоритет. Всё сохраняется в браузере.</p>
+    <p class="hint" data-i18n>Перетаскивай карточки мышью или двигай стрелками. Двойной клик по названию переименует задачу, клик по метке сменит приоритет. Всё сохраняется в браузере.</p>
   </div>
 </main>
 
 <footer class="pfoot">
   <div class="wrap pfoot__inner">
-    <p class="label">Другие проекты</p>
+    <p class="label" data-i18n>Другие проекты</p>
     <div class="pfoot__list" data-project-nav="kanban"></div>
   </div>
 </footer>
 
 <script>
 (function () {
+  var TM = window.TM;
+  var T = TM.t;
+  TM.addDict({
+    "Поиск по задачам": "Search tasks",
+    "Вернуть пример": "Restore example",
+    "Очистить доску": "Clear board",
+    "Точно очистить?": "Clear for sure?",
+    "Нужно сделать": "To do",
+    "В работе": "In progress",
+    "Готово": "Done",
+    "Новая задача…": "New task…",
+    "Новая задача в «Нужно сделать»": "New task in “To do”",
+    "Новая задача в «В работе»": "New task in “In progress”",
+    "Новая задача в «Готово»": "New task in “Done”",
+    "Добавить": "Add",
+    "Перетаскивай карточки мышью или двигай стрелками. Двойной клик по названию переименует задачу, клик по метке сменит приоритет. Всё сохраняется в браузере.":
+      "Drag cards with the mouse or move them with the arrows. Double-click a title to rename a task, click the label to change its priority. Everything is saved in your browser.",
+    "Низкий": "Low",
+    "Средний": "Medium",
+    "Высокий": "High",
+    "Сменить приоритет": "Change priority",
+    "Переместить влево": "Move left",
+    "Переместить вправо": "Move right",
+    "Удалить": "Delete",
+    "Удалить?": "Delete?",
+    "Ничего не найдено": "Nothing found",
+    "Перетащи сюда задачу": "Drop a task here",
+    "{done} из {total} готово": "{done} of {total} done",
+    "Задача выполнена": "Task done",
+    "Задача удалена": "Task deleted",
+    "Доска очищена": "Board cleared",
+    "Пример восстановлен": "Example restored",
+    "Сверстать главную страницу лендинга": "Build the landing page layout",
+    "Подключить форму обратной связи": "Hook up the contact form",
+    "Оптимизировать картинки в WebP": "Convert images to WebP",
+    "Добавить тёмную тему": "Add a dark theme",
+    "Настроить GitHub Pages": "Set up GitHub Pages",
+    "Собрать макет в Figma": "Make the Figma mockup",
+    "Адаптив под телефоны": "Make it mobile-friendly"
+  });
+
   var KEY = "tm-kanban";
   var COLS = ["todo", "doing", "done"];
   var PRIO = { low: "Низкий", mid: "Средний", high: "Высокий" };
   var PRIO_NEXT = { low: "mid", mid: "high", high: "low" };
 
+  // Example tasks are stored in Russian and shown through the dictionary
   function sample() {
     var d = Date.now();
     return [
@@ -166,7 +208,7 @@
   };
 
   function fmtDate(t) {
-    return new Date(t).toLocaleDateString("ru-RU", { day: "numeric", month: "short" });
+    return new Date(t).toLocaleDateString(TM.locale(), { day: "numeric", month: "short" });
   }
 
   function render() {
@@ -175,19 +217,19 @@
       var list = section.querySelector(".list");
       var items = tasks.filter(function (t) { return t.col === col; });
       section.querySelector(".col__count").textContent = items.length;
-      var shown = items.filter(function (t) { return !query || t.title.toLowerCase().indexOf(query) !== -1; });
+      var shown = items.filter(function (t) { return !query || T(t.title).toLowerCase().indexOf(query) !== -1; });
       list.innerHTML = "";
       if (!shown.length) {
         var e = document.createElement("div");
         e.className = "empty";
-        e.textContent = query ? "Ничего не найдено" : "Перетащи сюда задачу";
+        e.textContent = T(query ? "Ничего не найдено" : "Перетащи сюда задачу");
         list.appendChild(e);
       }
       shown.forEach(function (t) { list.appendChild(cardEl(t)); });
     });
     var done = tasks.filter(function (t) { return t.col === "done"; }).length;
     document.getElementById("progFill").style.width = (tasks.length ? done / tasks.length * 100 : 0) + "%";
-    document.getElementById("progLabel").textContent = done + " из " + tasks.length + " готово";
+    document.getElementById("progLabel").textContent = T("{done} из {total} готово").replace("{done}", done).replace("{total}", tasks.length);
     newId = null;
   }
 
@@ -200,15 +242,15 @@
     el.innerHTML =
       '<div class="card__title"></div>' +
       '<div class="card__foot">' +
-        '<button class="prio" type="button" data-p="' + t.prio + '" title="Сменить приоритет">' + PRIO[t.prio] + '</button>' +
+        '<button class="prio" type="button" data-p="' + t.prio + '" title="' + T("Сменить приоритет") + '">' + T(PRIO[t.prio]) + '</button>' +
         '<span class="card__date">' + fmtDate(t.at) + '</span>' +
         '<div class="card__actions">' +
-          '<button class="icon-btn" type="button" data-act="left" aria-label="Переместить влево"' + (ci === 0 ? " disabled" : "") + '>' + ICON.left + '</button>' +
-          '<button class="icon-btn" type="button" data-act="right" aria-label="Переместить вправо"' + (ci === 2 ? " disabled" : "") + '>' + ICON.right + '</button>' +
-          '<button class="icon-btn" type="button" data-act="del" aria-label="Удалить">' + ICON.del + '</button>' +
+          '<button class="icon-btn" type="button" data-act="left" aria-label="' + T("Переместить влево") + '"' + (ci === 0 ? " disabled" : "") + '>' + ICON.left + '</button>' +
+          '<button class="icon-btn" type="button" data-act="right" aria-label="' + T("Переместить вправо") + '"' + (ci === 2 ? " disabled" : "") + '>' + ICON.right + '</button>' +
+          '<button class="icon-btn" type="button" data-act="del" aria-label="' + T("Удалить") + '">' + ICON.del + '</button>' +
         '</div>' +
       '</div>';
-    el.querySelector(".card__title").textContent = t.title;
+    el.querySelector(".card__title").textContent = T(t.title);
     return el;
   }
 
@@ -232,15 +274,15 @@
       tasks.push(t);
       newId = t.id;
       save(); render();
-      if (t.col === "done") window.TM.toast("Задача выполнена");
+      if (t.col === "done") TM.toast(T("Задача выполнена"));
     } else if (act === "del") {
       if (btn.classList.contains("is-confirm")) {
         tasks.splice(tasks.indexOf(t), 1);
         save(); render();
-        window.TM.toast("Задача удалена");
+        TM.toast(T("Задача удалена"));
       } else {
         btn.classList.add("is-confirm");
-        btn.textContent = "Удалить?";
+        btn.textContent = T("Удалить?");
         setTimeout(function () {
           if (btn.isConnected && btn.classList.contains("is-confirm")) {
             btn.classList.remove("is-confirm");
@@ -267,7 +309,8 @@
       title.removeEventListener("keydown", onKey);
       var t = byId(card.dataset.id);
       var v = title.textContent.trim();
-      if (commit && v) t.title = v.slice(0, 140);
+      // an untouched example title keeps its dictionary key
+      if (commit && v && v !== T(t.title)) t.title = v.slice(0, 140);
       save(); render();
     }
     function onBlur() { finish(true); }
@@ -347,36 +390,33 @@
     else tasks.push(t);
     newId = t.id;
     save(); render();
-    if (!wasDone && t.col === "done") window.TM.toast("Задача выполнена");
+    if (!wasDone && t.col === "done") TM.toast(T("Задача выполнена"));
   });
 
   search.addEventListener("input", function () { query = search.value.trim().toLowerCase(); render(); });
 
-  function confirmButton(btn, label, action) {
-    var original = btn.textContent;
+  function confirmButton(btn, original, label, action) {
+    function reset() {
+      delete btn.dataset.armed;
+      btn.textContent = T(original);
+      btn.classList.remove("btn--primary");
+    }
     btn.addEventListener("click", function () {
-      if (btn.dataset.armed) {
-        delete btn.dataset.armed;
-        btn.textContent = original;
-        btn.classList.remove("btn--primary");
-        action();
-      } else {
-        btn.dataset.armed = "1";
-        btn.textContent = label;
-        btn.classList.add("btn--primary");
-        setTimeout(function () {
-          if (btn.dataset.armed) { delete btn.dataset.armed; btn.textContent = original; btn.classList.remove("btn--primary"); }
-        }, 3000);
-      }
+      if (btn.dataset.armed) { reset(); action(); return; }
+      btn.dataset.armed = "1";
+      btn.textContent = T(label);
+      btn.classList.add("btn--primary");
+      setTimeout(function () { if (btn.dataset.armed) reset(); }, 3000);
     });
   }
-  confirmButton(document.getElementById("clearBtn"), "Точно очистить?", function () {
-    tasks = []; save(); render(); window.TM.toast("Доска очищена");
+  confirmButton(document.getElementById("clearBtn"), "Очистить доску", "Точно очистить?", function () {
+    tasks = []; save(); render(); TM.toast(T("Доска очищена"));
   });
   document.getElementById("resetBtn").addEventListener("click", function () {
-    tasks = sample(); save(); render(); window.TM.toast("Пример восстановлен");
+    tasks = sample(); save(); render(); TM.toast(T("Пример восстановлен"));
   });
 
+  document.addEventListener("langchange", render);
   render();
 })();
 </script>

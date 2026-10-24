@@ -217,6 +217,12 @@ textarea.input { min-height: 110px; resize: vertical; }
   :root:not([data-theme="light"]) .theme-toggle .i-moon { display: none; }
 }
 
+/* Language switch: RU | EN, the active one is filled */
+.lang-toggle { gap: 2px; padding: 4px; font-family: var(--font-mono); font-size: 12px; font-weight: 600; }
+.lang-toggle span { padding: 6px 8px; border-radius: 999px; color: var(--ink-faint); transition: background-color 0.2s ease, color 0.2s ease; }
+:root[lang="ru"] .lang-toggle [data-l="ru"],
+:root[lang="en"] .lang-toggle [data-l="en"] { background: var(--ink); color: var(--paper); }
+
 /* Toast */
 .toast {
   position: fixed;
